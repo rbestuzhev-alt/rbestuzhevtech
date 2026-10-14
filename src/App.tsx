@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 function App() {
   const [clock, setClock] = useState('');
-  const [scrambled, setScrambled] = useState('');
-  const [captionRevealed, setCaptionRevealed] = useState(false);
+  const [scrambledLine1, setScrambledLine1] = useState('Пока тут ничего нет,');
+  const [scrambledLine2, setScrambledLine2] = useState('но не переживайте — я найду для вас решение.');
   const [svgAnimated, setSvgAnimated] = useState(false);
   const [guidesVisible, setGuidesVisible] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
@@ -15,7 +15,8 @@ function App() {
   const contactRowsRef = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useRef(false);
 
-  const targetText = 'ошибка 404 · страница не найдена';
+  const line1 = 'Пока тут ничего нет,';
+  const line2 = 'но не переживайте — я найду для вас решение.';
   const glitchChars = 'абвгдежзийклмнопрстуфхцчшщъыьэюя0123456789!@#$%&*';
 
   // Check reduced motion preference
@@ -41,39 +42,53 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Scramble effect
+  // Scramble effect (two lines, sequential)
   useEffect(() => {
     if (reducedMotion.current) {
-      setScrambled(targetText);
+      setScrambledLine1(line1);
+      setScrambledLine2(line2);
       setSvgAnimated(true);
       setGuidesVisible(true);
-      setCaptionRevealed(true);
       return;
     }
 
-    let iteration = 0;
-    const maxIterations = targetText.length;
-    const interval = setInterval(() => {
-      setScrambled(
-        targetText
-          .split('')
-          .map((char, index) => {
-            if (index < iteration) return targetText[index];
-            if (char === ' ') return ' ';
-            return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-          })
-          .join('')
-      );
-      iteration += 1 / 2;
-      if (iteration >= maxIterations) {
-        clearInterval(interval);
-        setScrambled(targetText);
-        // Start SVG animation after scramble
-        setTimeout(() => setSvgAnimated(true), 300);
-      }
-    }, 40);
+    const scrambleLine = (
+      target: string,
+      setter: (v: string) => void,
+      onComplete: () => void
+    ) => {
+      let iteration = 0;
+      const maxIterations = target.length;
+      const interval = setInterval(() => {
+        setter(
+          target
+            .split('')
+            .map((char: string, index: number) => {
+              if (index < iteration) return target[index];
+              if (char === ' ' || char === ',' || char === '.' || char === '—' || char === '-') return char;
+              return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            })
+            .join('')
+        );
+        iteration += 1 / 2;
+        if (iteration >= maxIterations) {
+          clearInterval(interval);
+          setter(target);
+          onComplete();
+        }
+      }, 40);
+      return interval;
+    };
 
-    return () => clearInterval(interval);
+    // Decode line 1 first, then line 2
+    const interval1 = scrambleLine(line1, setScrambledLine1, () => {
+      scrambleLine(line2, setScrambledLine2, () => {
+        // Start SVG animation after both lines decoded
+        setTimeout(() => setSvgAnimated(true), 300);
+      });
+    });
+
+    return () => clearInterval(interval1);
   }, []);
 
   // SVG animation + pen movement (synchronized rAF)
@@ -147,7 +162,6 @@ function App() {
             finished = true;
             pen.classList.remove('active');
             setTimeout(() => setGuidesVisible(true), 400);
-            setTimeout(() => setCaptionRevealed(true), 800);
           }
           return; // stop rAF
         }
@@ -269,9 +283,16 @@ function App() {
       {/* Hero */}
       <main className="hero">
         <div className="hero__inner">
-          <p className="micro hero__scramble" aria-live="polite">
-            {scrambled}
-          </p>
+          <div className="hero__scramble" aria-live="polite">
+            <span className="hero__scramble-line">
+              <span className="hero__scramble-ghost" aria-hidden="true">{line1}</span>
+              <span className="hero__scramble-text">{scrambledLine1}</span>
+            </span>
+            <span className="hero__scramble-line">
+              <span className="hero__scramble-ghost" aria-hidden="true">{line2}</span>
+              <span className="hero__scramble-text">{scrambledLine2}</span>
+            </span>
+          </div>
 
           {/* SVG 404 */}
           <div className="hero__svg-wrap">
@@ -339,16 +360,6 @@ function App() {
                 />
               </g>
             </svg>
-          </div>
-
-          {/* Caption */}
-          <div className="hero__caption">
-            <span className={`hero__caption-line ${captionRevealed ? 'revealed' : ''}`}>
-              <span>Пока тут ничего нет,</span>
-            </span>
-            <span className={`hero__caption-line ${captionRevealed ? 'revealed' : ''}`} style={{ transitionDelay: '.15s' }}>
-              <span>но не переживайте — я найду для вас решение.</span>
-            </span>
           </div>
 
           {/* CTA button */}

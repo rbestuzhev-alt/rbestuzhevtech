@@ -109,7 +109,30 @@ body {
 
 .hero__scramble {
   margin-bottom: 2.5rem;
-  min-height: 1.4em;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .28em;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.hero__scramble-line {
+  display: block;
+  position: relative;
+}
+
+.hero__scramble-ghost {
+  visibility: hidden;
+  display: block;
+}
+
+.hero__scramble-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .hero__svg-wrap {
@@ -121,31 +144,6 @@ body {
 .hero__svg-wrap svg {
   width: 100%;
   height: auto;
-}
-
-.hero__caption {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-  text-transform: lowercase;
-}
-
-.hero__caption-line {
-  display: block;
-  overflow: hidden;
-}
-
-.hero__caption-line span {
-  display: inline-block;
-  transform: translateY(110%);
-  transition: transform .9s cubic-bezier(.22, 1, .36, 1);
-}
-
-.hero__caption-line.revealed span {
-  transform: translateY(0);
 }
 
 .hero__btn {
@@ -403,10 +401,6 @@ body {
 
   .guides {
     opacity: 1 !important;
-  }
-
-  .hero__caption-line span {
-    transform: translateY(0) !important;
   }
 
   .contact__row {
