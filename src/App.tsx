@@ -2,9 +2,6 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 function App() {
   const [clock, setClock] = useState('');
-  const [scrambledLine1, setScrambledLine1] = useState('Пока тут ничего нет,');
-  const [scrambledLine2, setScrambledLine2] = useState('но не переживайте — я найду для вас решение.');
-  const [svgAnimated, setSvgAnimated] = useState(false);
   const [guidesVisible, setGuidesVisible] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastText, setToastText] = useState('');
@@ -12,6 +9,8 @@ function App() {
 
   const svgRef = useRef<SVGSVGElement>(null);
   const penRef = useRef<SVGCircleElement>(null);
+  const scrambleText1Ref = useRef<HTMLSpanElement>(null);
+  const scrambleText2Ref = useRef<HTMLSpanElement>(null);
   const contactRowsRef = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useRef(false);
 
@@ -42,66 +41,33 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Scramble effect (two lines, sequential)
+  // Master synchronized animation: SVG drawing + scramble decode
   useEffect(() => {
     if (reducedMotion.current) {
-      setScrambledLine1(line1);
-      setScrambledLine2(line2);
-      setSvgAnimated(true);
+      // Show everything immediately
+      if (scrambleText1Ref.current) scrambleText1Ref.current.textContent = line1;
+      if (scrambleText2Ref.current) scrambleText2Ref.current.textContent = line2;
       setGuidesVisible(true);
+      // Show SVG paths fully
+      if (svgRef.current) {
+        const paths = svgRef.current.querySelectorAll('.svg-path') as NodeListOf<SVGPathElement>;
+        paths.forEach((el) => {
+          const length = el.getTotalLength();
+          el.style.strokeDasharray = String(length);
+          el.style.strokeDashoffset = '0';
+        });
+      }
       return;
     }
 
-    const scrambleLine = (
-      target: string,
-      setter: (v: string) => void,
-      onComplete: () => void
-    ) => {
-      let iteration = 0;
-      const maxIterations = target.length;
-      const interval = setInterval(() => {
-        setter(
-          target
-            .split('')
-            .map((char: string, index: number) => {
-              if (index < iteration) return target[index];
-              if (char === ' ' || char === ',' || char === '.' || char === '—' || char === '-') return char;
-              return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-            })
-            .join('')
-        );
-        iteration += 1 / 2;
-        if (iteration >= maxIterations) {
-          clearInterval(interval);
-          setter(target);
-          onComplete();
-        }
-      }, 40);
-      return interval;
-    };
-
-    // Decode line 1 first, then line 2
-    const interval1 = scrambleLine(line1, setScrambledLine1, () => {
-      scrambleLine(line2, setScrambledLine2, () => {
-        // Start SVG animation after both lines decoded
-        setTimeout(() => setSvgAnimated(true), 300);
-      });
-    });
-
-    return () => clearInterval(interval1);
-  }, []);
-
-  // SVG animation + pen movement (synchronized rAF)
-  useEffect(() => {
-    if (!svgAnimated || reducedMotion.current || !svgRef.current) return;
+    if (!svgRef.current || !penRef.current) return;
 
     const svg = svgRef.current;
     const pen = penRef.current;
-    if (!pen) return;
+    const text1 = scrambleText1Ref.current;
+    const text2 = scrambleText2Ref.current;
 
-    const pathEls = svg.querySelectorAll('.svg-path') as NodeListOf<SVGPathElement>;
-
-    // Timings matching original CSS delays/durations (seconds)
+    // SVG timings (seconds) — unchanged
     const timings = [
       { delay: 0, duration: 1.2 },
       { delay: 1.2, duration: 1.6 },
@@ -109,7 +75,11 @@ function App() {
       { delay: 4.0, duration: 1.4 },
     ];
 
-    // Initialize exact lengths synchronously before first paint frame
+    // Total duration D = last path end
+    const D = timings[timings.length - 1].delay + timings[timings.length - 1].duration; // 5.4s
+
+    // Initialize SVG paths
+    const pathEls = svg.querySelectorAll('.svg-path') as NodeListOf<SVGPathElement>;
     const pathData: { el: SVGPathElement; length: number; delay: number; duration: number }[] = [];
     pathEls.forEach((el, i) => {
       const length = el.getTotalLength();
@@ -118,20 +88,69 @@ function App() {
       pathData.push({ el, length, delay: timings[i].delay, duration: timings[i].duration });
     });
 
+    // Scramble distribution: proportional to string lengths
+    const len1 = line1.length;
+    const len2 = line2.length;
+    const totalChars = len1 + len2;
+    const w1 = len1 / totalChars; // fraction of D for line1
+    const d1 = D * w1; // duration for line1
+    const d2 = D - d1; // duration for line2
+
+    // Initialize scramble text with random chars
+    const scrambleText = (target: string, progress: number): string => {
+      const revealCount = Math.floor(progress * target.length);
+      return target
+        .split('')
+        .map((char: string, index: number) => {
+          if (index < revealCount) return target[index];
+          if (char === ' ' || char === ',' || char === '.' || char === '—' || char === '-') return char;
+          return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+        })
+        .join('');
+    };
+
+    // Set initial scrambled state
+    if (text1) text1.textContent = scrambleText(line1, 0);
+    if (text2) text2.textContent = scrambleText(line2, 0);
+
     pen.classList.add('active');
-    const startTime = performance.now();
+    const t0 = performance.now();
     let rafId = 0;
     let finished = false;
 
-    // Smoothstep easing
+    // Smoothstep easing for SVG paths
     const smoothstep = (t: number): number => {
       const c = Math.max(0, Math.min(1, t));
       return c * c * (3 - 2 * c);
     };
 
     const tick = (now: number) => {
-      const elapsed = (now - startTime) / 1000; // seconds
+      const elapsed = (now - t0) / 1000; // seconds
 
+      // === SCRAMBLE ANIMATION ===
+      // Line 1: [0, d1]
+      if (text1) {
+        if (elapsed < d1) {
+          const progress = elapsed / d1;
+          text1.textContent = scrambleText(line1, progress);
+        } else {
+          text1.textContent = line1;
+        }
+      }
+
+      // Line 2: [d1, D]
+      if (text2) {
+        if (elapsed < d1) {
+          text2.textContent = scrambleText(line2, 0);
+        } else if (elapsed < D) {
+          const progress = (elapsed - d1) / d2;
+          text2.textContent = scrambleText(line2, progress);
+        } else {
+          text2.textContent = line2;
+        }
+      }
+
+      // === SVG ANIMATION ===
       // Find which path is currently active
       let activeIdx = -1;
       for (let i = 0; i < pathData.length; i++) {
@@ -153,32 +172,32 @@ function App() {
         }
       }
 
-      if (activeIdx === -1) {
-        // Check if all paths are done
-        const totalEnd = pathData[pathData.length - 1].delay + pathData[pathData.length - 1].duration;
-        if (elapsed >= totalEnd) {
-          // All done
-          if (!finished) {
-            finished = true;
-            pen.classList.remove('active');
-            setTimeout(() => setGuidesVisible(true), 400);
-          }
-          return; // stop rAF
-        }
-        // Between paths — keep pen at end of last completed path
-        rafId = requestAnimationFrame(tick);
-        return;
+      // Draw active path
+      if (activeIdx !== -1) {
+        const { el, length, delay, duration } = pathData[activeIdx];
+        const localT = (elapsed - delay) / duration;
+        const e = smoothstep(localT);
+        el.style.strokeDashoffset = String(length * (1 - e));
+        const pt = el.getPointAtLength(length * e);
+        pen.setAttribute('cx', String(pt.x));
+        pen.setAttribute('cy', String(pt.y));
       }
 
-      const { el, length, delay, duration } = pathData[activeIdx];
-      const localT = (elapsed - delay) / duration;
-      const e = smoothstep(localT);
-
-      // Synchronized: same eased value drives both dashoffset and pen position
-      el.style.strokeDashoffset = String(length * (1 - e));
-      const pt = el.getPointAtLength(length * e);
-      pen.setAttribute('cx', String(pt.x));
-      pen.setAttribute('cy', String(pt.y));
+      // === CHECK COMPLETION ===
+      if (elapsed >= D) {
+        if (!finished) {
+          finished = true;
+          // Finalize everything
+          if (text1) text1.textContent = line1;
+          if (text2) text2.textContent = line2;
+          pathData.forEach(({ el }) => {
+            el.style.strokeDashoffset = '0';
+          });
+          pen.classList.remove('active');
+          setTimeout(() => setGuidesVisible(true), 400);
+        }
+        return; // stop rAF
+      }
 
       rafId = requestAnimationFrame(tick);
     };
@@ -188,7 +207,7 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId);
     };
-  }, [svgAnimated]);
+  }, []);
 
   // IntersectionObserver for contact rows
   useEffect(() => {
@@ -354,11 +373,11 @@ function App() {
           <div className="hero__scramble" aria-live="polite">
             <span className="hero__scramble-line">
               <span className="hero__scramble-ghost" aria-hidden="true">{line1}</span>
-              <span className="hero__scramble-text">{scrambledLine1}</span>
+              <span className="hero__scramble-text" ref={scrambleText1Ref}>{line1}</span>
             </span>
             <span className="hero__scramble-line">
               <span className="hero__scramble-ghost" aria-hidden="true">{line2}</span>
-              <span className="hero__scramble-text">{scrambledLine2}</span>
+              <span className="hero__scramble-text" ref={scrambleText2Ref}>{line2}</span>
             </span>
           </div>
 
