@@ -283,17 +283,6 @@ function App() {
       {/* Hero */}
       <main className="hero">
         <div className="hero__inner">
-          <div className="hero__scramble" aria-live="polite">
-            <span className="hero__scramble-line">
-              <span className="hero__scramble-ghost" aria-hidden="true">{line1}</span>
-              <span className="hero__scramble-text">{scrambledLine1}</span>
-            </span>
-            <span className="hero__scramble-line">
-              <span className="hero__scramble-ghost" aria-hidden="true">{line2}</span>
-              <span className="hero__scramble-text">{scrambledLine2}</span>
-            </span>
-          </div>
-
           {/* SVG 404 */}
           <div className="hero__svg-wrap">
             <svg
@@ -360,6 +349,17 @@ function App() {
                 />
               </g>
             </svg>
+          </div>
+
+          <div className="hero__scramble" aria-live="polite">
+            <span className="hero__scramble-line">
+              <span className="hero__scramble-ghost" aria-hidden="true">{line1}</span>
+              <span className="hero__scramble-text">{scrambledLine1}</span>
+            </span>
+            <span className="hero__scramble-line">
+              <span className="hero__scramble-ghost" aria-hidden="true">{line2}</span>
+              <span className="hero__scramble-text">{scrambledLine2}</span>
+            </span>
           </div>
 
           {/* CTA button */}
