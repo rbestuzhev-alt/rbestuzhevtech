@@ -363,16 +363,6 @@ body {
   transition: none;
 }
 
-.svg-path.animate {
-  animation: draw var(--duration) var(--delay) ease forwards;
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 .guides {
   opacity: 0;
   transition: opacity .8s ease;

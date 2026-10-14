@@ -76,59 +76,104 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // SVG animation + pen movement
+  // SVG animation + pen movement (synchronized rAF)
   useEffect(() => {
     if (!svgAnimated || reducedMotion.current || !svgRef.current) return;
 
-    const paths = svgRef.current.querySelectorAll('.svg-path');
-    paths.forEach((path) => {
-      const el = path as SVGPathElement;
+    const svg = svgRef.current;
+    const pen = penRef.current;
+    if (!pen) return;
+
+    const pathEls = svg.querySelectorAll('.svg-path') as NodeListOf<SVGPathElement>;
+
+    // Timings matching original CSS delays/durations (seconds)
+    const timings = [
+      { delay: 0, duration: 1.2 },
+      { delay: 1.2, duration: 1.6 },
+      { delay: 2.8, duration: 1.2 },
+      { delay: 4.0, duration: 1.4 },
+    ];
+
+    // Initialize exact lengths synchronously before first paint frame
+    const pathData: { el: SVGPathElement; length: number; delay: number; duration: number }[] = [];
+    pathEls.forEach((el, i) => {
       const length = el.getTotalLength();
       el.style.strokeDasharray = String(length);
       el.style.strokeDashoffset = String(length);
-      el.classList.add('animate');
+      pathData.push({ el, length, delay: timings[i].delay, duration: timings[i].duration });
     });
 
-    // Pen animation
-    const animatePen = () => {
-      if (!penRef.current || !svgRef.current) return;
-      const paths = svgRef.current.querySelectorAll('.svg-path');
-      const pen = penRef.current;
-      pen.classList.add('active');
+    pen.classList.add('active');
+    const startTime = performance.now();
+    let rafId = 0;
+    let finished = false;
 
-      let currentPathIndex = 0;
-      let progress = 0;
-
-      const step = () => {
-        if (currentPathIndex >= paths.length) {
-          pen.classList.remove('active');
-          setTimeout(() => setGuidesVisible(true), 400);
-          setTimeout(() => setCaptionRevealed(true), 800);
-          return;
-        }
-
-        const currentPath = paths[currentPathIndex] as SVGPathElement;
-        const length = currentPath.getTotalLength();
-        const speed = 2.5;
-        progress += speed;
-
-        if (progress >= length) {
-          progress = 0;
-          currentPathIndex++;
-          requestAnimationFrame(step);
-          return;
-        }
-
-        const point = currentPath.getPointAtLength(progress);
-        pen.setAttribute('cx', String(point.x));
-        pen.setAttribute('cy', String(point.y));
-        requestAnimationFrame(step);
-      };
-
-      requestAnimationFrame(step);
+    // Smoothstep easing
+    const smoothstep = (t: number): number => {
+      const c = Math.max(0, Math.min(1, t));
+      return c * c * (3 - 2 * c);
     };
 
-    setTimeout(animatePen, 100);
+    const tick = (now: number) => {
+      const elapsed = (now - startTime) / 1000; // seconds
+
+      // Find which path is currently active
+      let activeIdx = -1;
+      for (let i = 0; i < pathData.length; i++) {
+        const { delay, duration } = pathData[i];
+        if (elapsed >= delay && elapsed < delay + duration) {
+          activeIdx = i;
+          break;
+        }
+      }
+
+      // Finalize paths that should be fully drawn
+      for (let i = 0; i < pathData.length; i++) {
+        const { el, length, delay, duration } = pathData[i];
+        const end = delay + duration;
+        if (elapsed >= end) {
+          el.style.strokeDashoffset = '0';
+        } else if (elapsed < delay) {
+          el.style.strokeDashoffset = String(length);
+        }
+      }
+
+      if (activeIdx === -1) {
+        // Check if all paths are done
+        const totalEnd = pathData[pathData.length - 1].delay + pathData[pathData.length - 1].duration;
+        if (elapsed >= totalEnd) {
+          // All done
+          if (!finished) {
+            finished = true;
+            pen.classList.remove('active');
+            setTimeout(() => setGuidesVisible(true), 400);
+            setTimeout(() => setCaptionRevealed(true), 800);
+          }
+          return; // stop rAF
+        }
+        // Between paths — keep pen at end of last completed path
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+
+      const { el, length, delay, duration } = pathData[activeIdx];
+      const localT = (elapsed - delay) / duration;
+      const e = smoothstep(localT);
+
+      // Synchronized: same eased value drives both dashoffset and pen position
+      el.style.strokeDashoffset = String(length * (1 - e));
+      const pt = el.getPointAtLength(length * e);
+      pen.setAttribute('cx', String(pt.x));
+      pen.setAttribute('cy', String(pt.y));
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
   }, [svgAnimated]);
 
   // IntersectionObserver for contact rows
