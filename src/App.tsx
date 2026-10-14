@@ -237,59 +237,61 @@ function App() {
               aria-label="404"
               role="img"
             >
-              {/* First 4 */}
-              <path
-                className="svg-path"
-                d="M 30 120 L 30 40 L 80 100 L 10 100"
-                stroke="var(--ink)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ '--duration': '1.2s', '--delay': '0s' } as React.CSSProperties}
-              />
-              {/* 0 (oval with overlap) */}
-              <path
-                className="svg-path"
-                d="M 175 80 C 175 45, 195 25, 215 25 C 235 25, 255 45, 255 80 C 255 115, 235 135, 215 135 C 195 135, 175 115, 175 80 C 175 72, 177 65, 180 60"
-                stroke="var(--ink)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
-              />
-              {/* Second 4 */}
-              <path
-                className="svg-path"
-                d="M 310 120 L 310 40 L 360 100 L 290 100"
-                stroke="var(--ink)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ '--duration': '1.2s', '--delay': '2.8s' } as React.CSSProperties}
-              />
-              {/* Wavy underline */}
-              <path
-                className="svg-path"
-                d="M 20 148 Q 60 140, 100 148 Q 140 156, 180 148 Q 220 140, 260 148 Q 300 156, 340 148 Q 370 142, 400 148"
-                stroke="var(--ink)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                style={{ '--duration': '1.4s', '--delay': '4s' } as React.CSSProperties}
-              />
-              {/* Guides */}
-              <g className={`guides ${guidesVisible ? 'visible' : ''}`}>
-                <line x1="210" y1="10" x2="210" y2="155" stroke="var(--hair)" strokeWidth="0.5" />
-                <line x1="10" y1="80" x2="410" y2="80" stroke="var(--hair)" strokeWidth="0.5" />
+              <g transform="translate(420 0) scale(-1 1)">
+                {/* First 4 */}
+                <path
+                  className="svg-path"
+                  d="M 30 120 L 30 40 L 80 100 L 10 100"
+                  stroke="var(--ink)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ '--duration': '1.2s', '--delay': '0s' } as React.CSSProperties}
+                />
+                {/* 0 (oval with overlap) */}
+                <path
+                  className="svg-path"
+                  d="M 175 80 C 175 45, 195 25, 215 25 C 235 25, 255 45, 255 80 C 255 115, 235 135, 215 135 C 195 135, 175 115, 175 80 C 175 72, 177 65, 180 60"
+                  stroke="var(--ink)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
+                />
+                {/* Second 4 */}
+                <path
+                  className="svg-path"
+                  d="M 310 120 L 310 40 L 360 100 L 290 100"
+                  stroke="var(--ink)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ '--duration': '1.2s', '--delay': '2.8s' } as React.CSSProperties}
+                />
+                {/* Wavy underline */}
+                <path
+                  className="svg-path"
+                  d="M 20 148 Q 60 140, 100 148 Q 140 156, 180 148 Q 220 140, 260 148 Q 300 156, 340 148 Q 370 142, 400 148"
+                  stroke="var(--ink)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  style={{ '--duration': '1.4s', '--delay': '4s' } as React.CSSProperties}
+                />
+                {/* Guides */}
+                <g className={`guides ${guidesVisible ? 'visible' : ''}`}>
+                  <line x1="210" y1="10" x2="210" y2="155" stroke="var(--hair)" strokeWidth="0.5" />
+                  <line x1="10" y1="80" x2="410" y2="80" stroke="var(--hair)" strokeWidth="0.5" />
+                </g>
+                {/* Pen dot */}
+                <circle
+                  ref={penRef}
+                  className="pen-dot"
+                  cx="0"
+                  cy="0"
+                  r="4"
+                  fill="var(--ink)"
+                />
               </g>
-              {/* Pen dot */}
-              <circle
-                ref={penRef}
-                className="pen-dot"
-                cx="0"
-                cy="0"
-                r="4"
-                fill="var(--ink)"
-              />
             </svg>
           </div>
 
