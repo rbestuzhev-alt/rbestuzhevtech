@@ -9,14 +9,13 @@ function App() {
 
   const svgRef = useRef<SVGSVGElement>(null);
   const penRef = useRef<SVGCircleElement>(null);
-  const scrambleText1Ref = useRef<HTMLSpanElement>(null);
-  const scrambleText2Ref = useRef<HTMLSpanElement>(null);
+  const decodingRef1 = useRef<HTMLSpanElement>(null);
+  const decodingRef2 = useRef<HTMLSpanElement>(null);
   const contactRowsRef = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useRef(false);
 
   const line1 = 'Пока тут ничего нет,';
   const line2 = 'но не переживайте — я найду для вас решение.';
-  const glitchChars = 'абвгдежзийклмнопрстуфхцчшщъыьэюя0123456789!@#$%&*';
 
   // Check reduced motion preference
   useEffect(() => {
@@ -41,12 +40,10 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Master synchronized animation: SVG drawing + scramble decode
+  // Master synchronized animation: SVG drawing + character-by-character typing
   useEffect(() => {
     if (reducedMotion.current) {
       // Show everything immediately
-      if (scrambleText1Ref.current) scrambleText1Ref.current.textContent = line1;
-      if (scrambleText2Ref.current) scrambleText2Ref.current.textContent = line2;
       setGuidesVisible(true);
       // Show SVG paths fully
       if (svgRef.current) {
@@ -64,8 +61,6 @@ function App() {
 
     const svg = svgRef.current;
     const pen = penRef.current;
-    const text1 = scrambleText1Ref.current;
-    const text2 = scrambleText2Ref.current;
 
     // SVG timings (seconds) — unchanged
     const timings = [
@@ -88,7 +83,7 @@ function App() {
       pathData.push({ el, length, delay: timings[i].delay, duration: timings[i].duration });
     });
 
-    // Scramble distribution: proportional to string lengths
+    // Character typing distribution: proportional to string lengths
     const len1 = line1.length;
     const len2 = line2.length;
     const totalChars = len1 + len2;
@@ -96,22 +91,21 @@ function App() {
     const d1 = D * w1; // duration for line1
     const d2 = D - d1; // duration for line2
 
-    // Initialize scramble text with random chars
-    const scrambleText = (target: string, progress: number): string => {
-      const revealCount = Math.floor(progress * target.length);
-      return target
-        .split('')
-        .map((char: string, index: number) => {
-          if (index < revealCount) return target[index];
-          if (char === ' ' || char === ',' || char === '.' || char === '—' || char === '-') return char;
-          return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-        })
-        .join('');
-    };
-
-    // Set initial scrambled state
-    if (text1) text1.textContent = scrambleText(line1, 0);
-    if (text2) text2.textContent = scrambleText(line2, 0);
+    // Set transition delays for each character span
+    if (decodingRef1.current) {
+      const spans = decodingRef1.current.querySelectorAll('span');
+      spans.forEach((span, i) => {
+        const delay = (i / len1) * d1;
+        span.style.transitionDelay = `${delay}s`;
+      });
+    }
+    if (decodingRef2.current) {
+      const spans = decodingRef2.current.querySelectorAll('span');
+      spans.forEach((span, i) => {
+        const delay = d1 + (i / len2) * d2;
+        span.style.transitionDelay = `${delay}s`;
+      });
+    }
 
     pen.classList.add('active');
     const t0 = performance.now();
@@ -126,29 +120,6 @@ function App() {
 
     const tick = (now: number) => {
       const elapsed = (now - t0) / 1000; // seconds
-
-      // === SCRAMBLE ANIMATION ===
-      // Line 1: [0, d1]
-      if (text1) {
-        if (elapsed < d1) {
-          const progress = elapsed / d1;
-          text1.textContent = scrambleText(line1, progress);
-        } else {
-          text1.textContent = line1;
-        }
-      }
-
-      // Line 2: [d1, D]
-      if (text2) {
-        if (elapsed < d1) {
-          text2.textContent = scrambleText(line2, 0);
-        } else if (elapsed < D) {
-          const progress = (elapsed - d1) / d2;
-          text2.textContent = scrambleText(line2, progress);
-        } else {
-          text2.textContent = line2;
-        }
-      }
 
       // === SVG ANIMATION ===
       // Find which path is currently active
@@ -187,9 +158,7 @@ function App() {
       if (elapsed >= D) {
         if (!finished) {
           finished = true;
-          // Finalize everything
-          if (text1) text1.textContent = line1;
-          if (text2) text2.textContent = line2;
+          // Finalize SVG
           pathData.forEach(({ el }) => {
             el.style.strokeDashoffset = '0';
           });
@@ -201,6 +170,10 @@ function App() {
 
       rafId = requestAnimationFrame(tick);
     };
+
+    // Trigger character typing animation
+    if (decodingRef1.current) decodingRef1.current.classList.add('active');
+    if (decodingRef2.current) decodingRef2.current.classList.add('active');
 
     rafId = requestAnimationFrame(tick);
 
@@ -373,11 +346,21 @@ function App() {
           <div className="hero__scramble" aria-live="polite">
             <span className="hero__scramble-line">
               <span className="hero__scramble-ghost" aria-hidden="true">{line1}</span>
-              <span className="hero__scramble-text" ref={scrambleText1Ref}>{line1}</span>
+              <span className="hero__scramble-text decoding" ref={decodingRef1} aria-hidden="true">
+                {line1.split('').map((char, i) => (
+                  <span key={i}>{char}</span>
+                ))}
+              </span>
+              <span className="hero__scramble-visible">{line1}</span>
             </span>
             <span className="hero__scramble-line">
               <span className="hero__scramble-ghost" aria-hidden="true">{line2}</span>
-              <span className="hero__scramble-text" ref={scrambleText2Ref}>{line2}</span>
+              <span className="hero__scramble-text decoding" ref={decodingRef2} aria-hidden="true">
+                {line2.split('').map((char, i) => (
+                  <span key={i}>{char}</span>
+                ))}
+              </span>
+              <span className="hero__scramble-visible">{line2}</span>
             </span>
           </div>
 

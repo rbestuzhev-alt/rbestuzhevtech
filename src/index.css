@@ -135,6 +135,38 @@ body {
   width: 100%;
 }
 
+/* Видимый слой — показан без JS, скрыт с JS */
+.hero__scramble-visible {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.js .hero__scramble-visible {
+  visibility: hidden;
+}
+
+/* Посимвольная анимация — скрыта без JS, показана с JS */
+.decoding {
+  display: none;
+}
+
+.js .decoding {
+  display: inline;
+}
+
+.js .decoding span {
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity .16s ease, filter .16s ease;
+}
+
+.js .decoding.active span {
+  opacity: 1;
+  filter: blur(0);
+}
+
 .hero__svg-wrap {
   margin-bottom: 3rem;
   width: 100%;
@@ -406,6 +438,12 @@ body {
   .contact__row {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .decoding span {
+    opacity: 1 !important;
+    filter: none !important;
+    transition: none !important;
   }
 }
 
