@@ -84,7 +84,8 @@ function App() {
     paths.forEach((path) => {
       const el = path as SVGPathElement;
       const length = el.getTotalLength();
-      el.style.setProperty('--path-length', String(length));
+      el.style.strokeDasharray = String(length);
+      el.style.strokeDashoffset = String(length);
       el.classList.add('animate');
     });
 

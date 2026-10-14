@@ -358,8 +358,8 @@ body {
 
 /* SVG animation */
 .svg-path {
-  stroke-dasharray: var(--path-length);
-  stroke-dashoffset: var(--path-length);
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
   transition: none;
 }
 
