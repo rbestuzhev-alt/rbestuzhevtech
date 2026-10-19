@@ -33,7 +33,7 @@ function App() {
         second: '2-digit',
         hour12: false,
       }).format(now);
-      setClock(`барнаул · ${timeStr}`);
+      setClock(timeStr);
     };
     updateClock();
     const interval = setInterval(updateClock, 1000);
