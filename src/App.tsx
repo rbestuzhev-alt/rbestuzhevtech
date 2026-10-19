@@ -6,6 +6,7 @@ function App() {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastText, setToastText] = useState('');
   const [copyStates, setCopyStates] = useState<Record<string, boolean>>({});
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const decodingRef1 = useRef<HTMLSpanElement>(null);
@@ -278,6 +279,28 @@ function App() {
     }
   };
 
+  // Privacy modal
+  const openPrivacy = () => {
+    setPrivacyModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePrivacy = () => {
+    setPrivacyModalOpen(false);
+    document.body.style.overflow = '';
+  };
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && privacyModalOpen) {
+        closePrivacy();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [privacyModalOpen]);
+
   return (
     <>
       {/* Paper grain overlay */}
@@ -393,6 +416,10 @@ function App() {
           <button className="hero__btn" onClick={scrollToContact}>
             <span>Связаться</span>
           </button>
+
+          <p className="privacy-trigger">
+            Нажимая кнопку, вы соглашаетесь с <a href="#" className="privacy-link" onClick={(e) => { e.preventDefault(); openPrivacy(); }}>политикой конфиденциальности</a>
+          </p>
           </div>
         </div>
       </main>
@@ -474,6 +501,22 @@ function App() {
       {/* Toast */}
       <div className={`toast ${toastVisible ? 'show' : ''}`} role="status" aria-live="polite">
         {toastText}
+      </div>
+
+      {/* Privacy Modal */}
+      <div id="privacy-modal" className={`privacy-modal ${privacyModalOpen ? 'active' : ''}`} aria-hidden={!privacyModalOpen}>
+        <div className="privacy-modal__overlay" onClick={closePrivacy}></div>
+        <div className="privacy-modal__content">
+          <button className="privacy-modal__close" onClick={closePrivacy} aria-label="Закрыть">&times;</button>
+          <h2 className="privacy-modal__title"><em>политика</em> конфиденциальности</h2>
+          <div className="privacy-modal__text">
+            <p><strong>01 — Цель.</strong> Обработка ваших обращений, поступивших через телефон, почту, Telegram или MAX, для связи и обсуждения задач.</p>
+            <p><strong>02 — Данные.</strong> Мы обрабатываем только те данные, которые вы добровольно предоставляете (имя, номер телефона, адрес электронной почты, текст сообщения).</p>
+            <p><strong>03 — Конфиденциальность.</strong> Ваши данные не передаются третьим лицам и не используются для маркетинговых рассылок без вашего явного согласия.</p>
+            <p><strong>04 — Хранение.</strong> Данные хранятся до момента решения вашего вопроса или до отзыва согласия по запросу на fullstack@bestuzhev.tech.</p>
+            <p><strong>05 — Права.</strong> Вы вправе запросить удаление или изменение ваших персональных данных в любой момент, написав на указанную почту.</p>
+          </div>
+        </div>
       </div>
     </>
   );
