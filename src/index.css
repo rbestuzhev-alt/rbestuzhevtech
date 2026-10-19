@@ -197,7 +197,7 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: color .4s ease;
+  transition: color .4s ease, transform .12s ease;
   text-decoration: none;
 }
 
@@ -215,12 +215,23 @@ body {
   z-index: 0;
 }
 
-.hero__btn:hover::before {
-  transform: scaleY(1);
+@media (hover: hover) and (pointer: fine) {
+  .hero__btn:hover::before {
+    transform: scaleY(1);
+  }
+
+  .hero__btn:hover {
+    color: var(--paper);
+  }
 }
 
-.hero__btn:hover {
+.hero__btn:active {
+  transform: scale(.97);
   color: var(--paper);
+}
+
+.hero__btn:active::before {
+  transform: scaleY(1);
 }
 
 .hero__btn span {
@@ -323,7 +334,7 @@ body {
   border: 1px solid var(--hair);
   padding: 10px 20px;
   cursor: pointer;
-  transition: color .3s, border-color .3s, background-color .3s;
+  transition: color .3s, border-color .3s, background-color .3s, transform .12s ease;
   white-space: nowrap;
   text-decoration: none;
   display: inline-flex;
@@ -331,7 +342,20 @@ body {
   gap: 8px;
 }
 
-.contact__action-btn:hover {
+@media (hover: hover) and (pointer: fine) {
+  .contact__action-btn:hover {
+    color: var(--paper);
+    border-color: var(--ink);
+    background-color: var(--ink);
+  }
+
+  .contact__action-btn:hover .arrow {
+    transform: translateX(4px);
+  }
+}
+
+.contact__action-btn:active {
+  transform: scale(.97);
   color: var(--paper);
   border-color: var(--ink);
   background-color: var(--ink);
@@ -339,10 +363,6 @@ body {
 
 .contact__action-btn .arrow {
   transition: transform .3s ease;
-}
-
-.contact__action-btn:hover .arrow {
-  transform: translateX(4px);
 }
 
 .contact__note {
