@@ -108,7 +108,6 @@ body {
 }
 
 .hero__scramble {
-  margin-bottom: 3.5rem;
   font-family: 'Manrope', sans-serif;
   font-weight: 600;
   font-size: 11px;
@@ -167,8 +166,14 @@ body {
   filter: blur(0);
 }
 
+.hero__column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(32px, 5vw, 56px);
+}
+
 .hero__svg-wrap {
-  margin-bottom: 3rem;
   width: 100%;
   max-width: 420px;
 }

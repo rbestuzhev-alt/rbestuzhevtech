@@ -303,6 +303,7 @@ function App() {
       {/* Hero */}
       <main className="hero">
         <div className="hero__inner">
+          <div className="hero__column">
           {/* SVG 404 */}
           <div className="hero__svg-wrap">
             <svg
@@ -392,8 +393,7 @@ function App() {
           <button className="hero__btn" onClick={scrollToContact}>
             <span>Связаться</span>
           </button>
-
-
+          </div>
         </div>
       </main>
 
