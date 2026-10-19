@@ -334,10 +334,10 @@ function App() {
                   strokeLinejoin="round"
                   style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
                 />
-                {/* Second 4 (shifted left-up on screen, then +20 X to equalize gaps) */}
+                {/* Second 4 (shifted left-up on screen, +20 X to equalize gaps, -10 Y to lift) */}
                 <path
                   className="svg-path"
-                  d="M 370 108 L 370 28 L 420 88 L 350 88"
+                  d="M 370 98 L 370 18 L 420 78 L 350 78"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
