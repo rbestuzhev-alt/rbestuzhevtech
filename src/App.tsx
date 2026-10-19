@@ -8,7 +8,6 @@ function App() {
   const [copyStates, setCopyStates] = useState<Record<string, boolean>>({});
 
   const svgRef = useRef<SVGSVGElement>(null);
-  const penRef = useRef<SVGCircleElement>(null);
   const decodingRef1 = useRef<HTMLSpanElement>(null);
   const decodingRef2 = useRef<HTMLSpanElement>(null);
   const contactRowsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -57,10 +56,9 @@ function App() {
       return;
     }
 
-    if (!svgRef.current || !penRef.current) return;
+    if (!svgRef.current) return;
 
     const svg = svgRef.current;
-    const pen = penRef.current;
 
     // SVG timings (seconds) — unchanged
     const timings = [
@@ -82,6 +80,9 @@ function App() {
       el.style.strokeDashoffset = String(length);
       pathData.push({ el, length, delay: timings[i].delay, duration: timings[i].duration });
     });
+
+    // Initialize pen dots — one per path
+    const pens = svg.querySelectorAll('.pen-dot') as NodeListOf<SVGCircleElement>;
 
     // Character typing distribution: proportional to string lengths
     const len1 = line1.length;
@@ -107,10 +108,10 @@ function App() {
       });
     }
 
-    pen.classList.add('active');
     const t0 = performance.now();
     let rafId = 0;
     let finished = false;
+    let prevActiveIdx = -1;
 
     // Smoothstep easing for SVG paths
     const smoothstep = (t: number): number => {
@@ -132,6 +133,28 @@ function App() {
         }
       }
 
+      // Handle pen transitions
+      if (activeIdx !== prevActiveIdx) {
+        // Fade out previous pen
+        if (prevActiveIdx >= 0 && prevActiveIdx < pens.length) {
+          pens[prevActiveIdx].classList.remove('active');
+          pens[prevActiveIdx].classList.add('fading');
+        }
+        // Activate new pen at start position
+        if (activeIdx >= 0 && activeIdx < pens.length) {
+          const { el } = pathData[activeIdx];
+          const startPt = el.getPointAtLength(0);
+          pens[activeIdx].setAttribute('cx', String(startPt.x));
+          pens[activeIdx].setAttribute('cy', String(startPt.y));
+          pens[activeIdx].classList.remove('fading');
+          // Use rAF to ensure class removal is processed before adding active
+          requestAnimationFrame(() => {
+            pens[activeIdx].classList.add('active');
+          });
+        }
+        prevActiveIdx = activeIdx;
+      }
+
       // Finalize paths that should be fully drawn
       for (let i = 0; i < pathData.length; i++) {
         const { el, length, delay, duration } = pathData[i];
@@ -150,8 +173,8 @@ function App() {
         const e = smoothstep(localT);
         el.style.strokeDashoffset = String(length * (1 - e));
         const pt = el.getPointAtLength(length * e);
-        pen.setAttribute('cx', String(pt.x));
-        pen.setAttribute('cy', String(pt.y));
+        pens[activeIdx].setAttribute('cx', String(pt.x));
+        pens[activeIdx].setAttribute('cy', String(pt.y));
       }
 
       // === CHECK COMPLETION ===
@@ -162,7 +185,12 @@ function App() {
           pathData.forEach(({ el }) => {
             el.style.strokeDashoffset = '0';
           });
-          pen.classList.remove('active');
+          // Fade out last pen
+          const lastPenIdx = pathData.length - 1;
+          if (lastPenIdx < pens.length) {
+            pens[lastPenIdx].classList.remove('active');
+            pens[lastPenIdx].classList.add('fading');
+          }
           setTimeout(() => setGuidesVisible(true), 400);
         }
         return; // stop rAF
@@ -330,15 +358,11 @@ function App() {
                   <line x1="210" y1="10" x2="210" y2="155" stroke="var(--hair)" strokeWidth="0.5" />
                   <line x1="10" y1="80" x2="410" y2="80" stroke="var(--hair)" strokeWidth="0.5" />
                 </g>
-                {/* Pen dot */}
-                <circle
-                  ref={penRef}
-                  className="pen-dot"
-                  cx="0"
-                  cy="0"
-                  r="4"
-                  fill="var(--ink)"
-                />
+                {/* Pen dots — one per path */}
+                <circle className="pen-dot pen-dot--0" cx="0" cy="0" r="4" fill="var(--ink)" />
+                <circle className="pen-dot pen-dot--1" cx="0" cy="0" r="4" fill="var(--ink)" />
+                <circle className="pen-dot pen-dot--2" cx="0" cy="0" r="4" fill="var(--ink)" />
+                <circle className="pen-dot pen-dot--3 pen-dot--final" cx="0" cy="0" r="4" fill="var(--ink)" />
               </g>
             </svg>
           </div>
