@@ -654,6 +654,12 @@ body {
   margin-top: 16px;
 }
 
+@media (max-width: 760px) {
+  .privacy-trigger {
+    margin-top: 12px;
+  }
+}
+
 .privacy-link {
   color: var(--ink);
   text-decoration: underline;
