@@ -175,13 +175,27 @@ body {
 }
 
 .hero__svg-wrap {
-  width: 100%;
-  max-width: 420px;
+  width: clamp(280px, 60vw, 720px);
+  max-width: 100%;
 }
 
 .hero__svg-wrap svg {
   width: 100%;
   height: auto;
+}
+
+@media (max-width: 760px) {
+  .hero__svg-wrap {
+    width: 85vw;
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hero__svg-wrap {
+    width: 60vw;
+    max-width: 800px;
+  }
 }
 
 .hero__btn {
