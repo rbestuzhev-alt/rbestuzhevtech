@@ -466,11 +466,11 @@ function App() {
         >
           <div>
             <p className="micro contact__label">MAX</p>
-            <a id="max" className="contact__value" href="https://max.ru/USERNAME" target="_blank" rel="noopener">@USERNAME</a>
+            <a id="max" className="contact__value" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">Написать в MAX</a>
           </div>
           <button
             className={`contact__copy-btn ${copyStates['max'] ? 'success' : ''}`}
-            onClick={() => handleCopy('@USERNAME', 'max')}
+            onClick={() => handleCopy('https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk', 'max')}
           >
             {copyStates['max'] ? '✓ готово' : 'копировать'}
           </button>
