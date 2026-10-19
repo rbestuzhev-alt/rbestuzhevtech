@@ -440,7 +440,7 @@ function App() {
             <p className="micro contact__label">телеграм</p>
             <span className="contact__value">@rbestuzhev</span>
           </div>
-          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">В Telegram</a>
+          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">В Телеграм</a>
         </div>
 
         {/* MAX */}
