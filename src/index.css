@@ -403,7 +403,8 @@ body {
   font-size: 0.9375rem; /* 15px - Apple Subhead */
   line-height: 1.6;
   color: var(--muted);
-  max-width: 480px;
+  max-width: 640px;
+  padding: 0 24px;
   text-transform: lowercase;
   text-align: center;
 }
@@ -447,6 +448,7 @@ body {
   .contact__note {
     font-size: 1rem; /* 16px */
     line-height: 1.6;
+    padding: 0 24px;
   }
   .contact__title {
     font-size: clamp(1.75rem, 8vw, 2.5rem); /* 28px - 40px on mobile */
