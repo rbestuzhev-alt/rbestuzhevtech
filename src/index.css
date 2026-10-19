@@ -223,6 +223,10 @@ body {
   z-index: 1;
 }
 
+.hero__note {
+  margin-top: 1.5rem;
+}
+
 
 
 /* Vertical side details */
