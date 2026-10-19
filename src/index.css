@@ -304,24 +304,34 @@ body {
 .contact__action-btn {
   font-family: 'Manrope', sans-serif;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: .2em;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--hair);
-  padding: .5rem 1rem;
+  letter-spacing: .26em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  padding: 17px 44px;
   cursor: pointer;
   transition: color .3s, border-color .3s, background-color .3s;
   white-space: nowrap;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .contact__action-btn:hover {
   color: var(--paper);
   border-color: var(--ink);
   background-color: var(--ink);
+}
+
+.contact__action-btn .arrow {
+  transition: transform .3s ease;
+}
+
+.contact__action-btn:hover .arrow {
+  transform: translateX(4px);
 }
 
 .contact__note {

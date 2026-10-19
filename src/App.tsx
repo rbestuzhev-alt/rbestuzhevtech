@@ -414,7 +414,10 @@ function App() {
             <p className="micro contact__label">телефон</p>
             <span className="contact__value">+7 921 666 90 66</span>
           </div>
-          <a className="contact__action-btn" href="tel:+79216669066">Позвонить</a>
+          <a className="contact__action-btn" href="tel:+79216669066">
+            <span>Позвонить</span>
+            <span className="arrow">→</span>
+          </a>
         </div>
 
         {/* Email */}
@@ -427,7 +430,10 @@ function App() {
             <p className="micro contact__label">почта</p>
             <span className="contact__value">fullstack@bestuzhev.tech</span>
           </div>
-          <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech">Написать</a>
+          <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech">
+            <span>Написать</span>
+            <span className="arrow">→</span>
+          </a>
         </div>
 
         {/* Telegram */}
@@ -440,7 +446,10 @@ function App() {
             <p className="micro contact__label">Telegram</p>
             <span className="contact__value">@rbestuzhev</span>
           </div>
-          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">В Telegram</a>
+          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">
+            <span>В Telegram</span>
+            <span className="arrow">→</span>
+          </a>
         </div>
 
         {/* MAX */}
@@ -453,7 +462,10 @@ function App() {
             <p className="micro contact__label">MAX</p>
             <span className="contact__value">+7 921 666 90 66</span>
           </div>
-          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">В MAX</a>
+          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">
+            <span>В MAX</span>
+            <span className="arrow">→</span>
+          </a>
         </div>
 
         <p className="contact__note">
