@@ -410,10 +410,8 @@ function App() {
           ref={(el) => { contactRowsRef.current[0] = el; }}
           data-delay="0"
         >
-          <div>
-            <p className="micro contact__label">телефон</p>
-            <span className="contact__value">+7 921 666 90 66</span>
-          </div>
+          <p className="micro contact__label">телефон</p>
+          <span className="contact__value">+7 921 666 90 66</span>
           <a className="contact__action-btn" href="tel:+79216669066">
             <span>Позвонить</span>
             <span className="arrow">→</span>
@@ -426,10 +424,8 @@ function App() {
           ref={(el) => { contactRowsRef.current[1] = el; }}
           data-delay="150"
         >
-          <div>
-            <p className="micro contact__label">почта</p>
-            <span className="contact__value">fullstack@bestuzhev.tech</span>
-          </div>
+          <p className="micro contact__label">почта</p>
+          <span className="contact__value">fullstack@bestuzhev.tech</span>
           <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech">
             <span>Написать</span>
             <span className="arrow">→</span>
@@ -442,10 +438,8 @@ function App() {
           ref={(el) => { contactRowsRef.current[2] = el; }}
           data-delay="300"
         >
-          <div>
-            <p className="micro contact__label">Telegram</p>
-            <span className="contact__value">rbestuzhev</span>
-          </div>
+          <p className="micro contact__label">Telegram</p>
+          <span className="contact__value">rbestuzhev</span>
           <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">
             <span>В Telegram</span>
             <span className="arrow">→</span>
@@ -458,10 +452,8 @@ function App() {
           ref={(el) => { contactRowsRef.current[3] = el; }}
           data-delay="450"
         >
-          <div>
-            <p className="micro contact__label">MAX</p>
-            <span className="contact__value">Роман Бестужев</span>
-          </div>
+          <p className="micro contact__label">MAX</p>
+          <span className="contact__value">Роман Бестужев</span>
           <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">
             <span>В MAX</span>
             <span className="arrow">→</span>
