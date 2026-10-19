@@ -10,7 +10,7 @@ function App() {
   const svgRef = useRef<SVGSVGElement>(null);
   const decodingRef1 = useRef<HTMLSpanElement>(null);
   const decodingRef2 = useRef<HTMLSpanElement>(null);
-  const contactRowsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const contactRowsRef = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
   const reducedMotion = useRef(false);
 
   const line1 = 'Пока тут ничего нет,';
@@ -455,6 +455,24 @@ function App() {
             onClick={() => handleCopy('@rbestuzhev', 'telegram')}
           >
             {copyStates['telegram'] ? '✓ готово' : 'копировать'}
+          </button>
+        </div>
+
+        {/* MAX */}
+        <div
+          className="contact__row"
+          ref={(el) => { contactRowsRef.current[3] = el; }}
+          data-delay="450"
+        >
+          <div>
+            <p className="micro contact__label">MAX</p>
+            <a id="max" className="contact__value" href="https://max.ru/USERNAME" target="_blank" rel="noopener">@USERNAME</a>
+          </div>
+          <button
+            className={`contact__copy-btn ${copyStates['max'] ? 'success' : ''}`}
+            onClick={() => handleCopy('@USERNAME', 'max')}
+          >
+            {copyStates['max'] ? '✓ готово' : 'копировать'}
           </button>
         </div>
 
