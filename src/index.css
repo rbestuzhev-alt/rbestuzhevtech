@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  scrollbar-gutter: stable;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -663,10 +667,6 @@ body {
 }
 
 /* Privacy Modal */
-body {
-  scrollbar-gutter: stable;
-}
-
 .privacy-modal {
   position: fixed;
   inset: 0;
