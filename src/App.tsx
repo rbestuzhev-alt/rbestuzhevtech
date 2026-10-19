@@ -314,30 +314,30 @@ function App() {
               role="img"
             >
               <g transform="translate(420 0) scale(-1 1)">
-                {/* First 4 (screen-right, shifted closer to 0: +15 X in paper coords) */}
+                {/* First 4 (screen-right, shifted closer to 0: +15 X in paper coords, -6 Y) */}
                 <path
                   className="svg-path"
-                  d="M 35 100 L 35 20 L 85 80 L 15 80"
+                  d="M 35 94 L 35 14 L 85 74 L 15 74"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   style={{ '--duration': '1.2s', '--delay': '0s' } as React.CSSProperties}
                 />
-                {/* 0 (oval with overlap) */}
+                {/* 0 (oval with overlap, -6 Y) */}
                 <path
                   className="svg-path"
-                  d="M 175 80 C 175 45, 195 25, 215 25 C 235 25, 255 45, 255 80 C 255 115, 235 135, 215 135 C 195 135, 175 115, 175 80 C 175 72, 177 65, 180 60"
+                  d="M 175 74 C 175 39, 195 19, 215 19 C 235 19, 255 39, 255 74 C 255 109, 235 129, 215 129 C 195 129, 175 109, 175 74 C 175 66, 177 59, 180 54"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
                 />
-                {/* Second 4 (screen-left, shifted closer to 0: -15 X in paper coords) */}
+                {/* Second 4 (screen-left, shifted closer to 0: -15 X in paper coords, -6 Y) */}
                 <path
                   className="svg-path"
-                  d="M 355 98 L 355 18 L 405 78 L 335 78"
+                  d="M 355 92 L 355 12 L 405 72 L 335 72"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
