@@ -437,10 +437,10 @@ function App() {
           data-delay="300"
         >
           <div>
-            <p className="micro contact__label">телеграм</p>
+            <p className="micro contact__label">Telegram</p>
             <span className="contact__value">@rbestuzhev</span>
           </div>
-          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">В Телеграм</a>
+          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">В Telegram</a>
         </div>
 
         {/* MAX */}
@@ -450,10 +450,10 @@ function App() {
           data-delay="450"
         >
           <div>
-            <p className="micro contact__label">МАКС</p>
+            <p className="micro contact__label">MAX</p>
             <span className="contact__value">+7 921 666 90 66</span>
           </div>
-          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">В МАКС</a>
+          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">В MAX</a>
         </div>
 
         <p className="contact__note">
