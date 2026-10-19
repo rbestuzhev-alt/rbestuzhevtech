@@ -334,10 +334,10 @@ function App() {
                   strokeLinejoin="round"
                   style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
                 />
-                {/* Second 4 (shifted left-up on screen via +16 X, -12 Y in pre-mirror coords) */}
+                {/* Second 4 (shifted left-up on screen via +16 X, -12 Y in pre-mirror coords, then +24 X to move closer to 0) */}
                 <path
                   className="svg-path"
-                  d="M 326 108 L 326 28 L 376 88 L 306 88"
+                  d="M 350 108 L 350 28 L 400 88 L 330 88"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
