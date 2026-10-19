@@ -314,10 +314,10 @@ function App() {
               role="img"
             >
               <g transform="translate(420 0) scale(-1 1)">
-                {/* First 4 */}
+                {/* First 4 (shifted: +20 up, +10 right on screen) */}
                 <path
                   className="svg-path"
-                  d="M 30 120 L 30 40 L 80 100 L 10 100"
+                  d="M 20 100 L 20 20 L 70 80 L 0 80"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
