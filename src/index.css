@@ -264,14 +264,16 @@ body {
 
 /* Contact section */
 .contact {
-  padding: 6rem 2.5rem;
+  padding: 6rem max(2.5rem, env(safe-area-inset-left)) 6rem max(2.5rem, env(safe-area-inset-right));
   max-width: 640px;
   margin: 0 auto;
   text-align: center;
+  width: 100%;
 }
 
 .contact__header {
   margin-bottom: 3rem;
+  text-align: center;
 }
 
 .contact__title {
@@ -280,21 +282,26 @@ body {
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   text-transform: lowercase;
   margin-bottom: .75rem;
+  text-align: center;
 }
 
 .contact__subtitle {
   margin-bottom: 0;
+  text-align: center;
 }
 
 .contact__row {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   padding: 32px 0;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity .7s ease, transform .7s ease;
+  text-align: center;
+  width: 100%;
 }
 
 .contact__row::before {
@@ -303,7 +310,7 @@ body {
   width: 60%;
   height: 1px;
   background: var(--hair);
-  margin-bottom: 16px;
+  margin: 0 auto 16px auto;
 }
 
 .contact__row.visible {
@@ -313,6 +320,8 @@ body {
 
 .contact__label {
   margin-bottom: 0;
+  text-align: center;
+  display: block;
 }
 
 .contact__value {
@@ -321,6 +330,8 @@ body {
   font-size: clamp(1.1rem, 2.5vw, 1.4rem);
   color: var(--ink);
   text-decoration: none;
+  text-align: center;
+  display: block;
 }
 
 .contact__action-btn {
@@ -339,7 +350,9 @@ body {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  margin: 0 auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -380,14 +393,25 @@ body {
 
 @media (max-width: 760px) {
   .contact {
-    max-width: 90vw;
-    padding: 4rem 1.5rem;
+    max-width: 100%;
+    padding: 4rem max(1.5rem, env(safe-area-inset-left)) 4rem max(1.5rem, env(safe-area-inset-right));
+    text-align: center;
   }
   .contact__row::before {
     width: 80%;
+    margin: 0 auto 16px auto;
   }
   .contact__row {
     padding: 24px 0;
+    text-align: center;
+    align-items: center;
+  }
+  .contact__label,
+  .contact__value,
+  .contact__action-btn {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
