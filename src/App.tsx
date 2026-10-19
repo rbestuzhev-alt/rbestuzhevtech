@@ -401,7 +401,7 @@ function App() {
       <section className="contact" id="contact">
         <div className="contact__header">
           <h2 className="contact__title">найдём решение вместе.</h2>
-          <p className="micro contact__subtitle">ответа обычно в течение дня</p>
+          <p className="micro contact__subtitle">Отвечу вам в течение дня</p>
         </div>
 
         {/* Phone */}
