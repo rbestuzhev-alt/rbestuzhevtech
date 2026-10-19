@@ -288,13 +288,19 @@ body {
 .contact__title {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
-  font-size: 1.75rem; /* 28px - Apple Title 1 */
+  font-size: clamp(2rem, 5vw, 3.5rem); /* 32px - 56px */
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   text-transform: lowercase;
-  margin-bottom: .75rem;
+  margin-top: clamp(3rem, 8vh, 5rem); /* 48px - 80px */
+  margin-bottom: 3rem; /* 48px */
   text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .contact__subtitle {
+  margin-top: 1.5rem; /* 24px - увеличенный отступ от заголовка */
   margin-bottom: 0;
   text-align: center;
 }
@@ -443,7 +449,8 @@ body {
     line-height: 1.6;
   }
   .contact__title {
-    font-size: 1.5rem; /* 24px */
+    font-size: clamp(1.75rem, 8vw, 2.5rem); /* 28px - 40px on mobile */
+    margin-bottom: 2rem;
   }
 }
 
@@ -454,6 +461,12 @@ body {
   }
   .contact__action-btn {
     font-size: 0.8125rem; /* 13px */
+  }
+}
+
+@media (min-width: 1440px) {
+  .contact__title {
+    font-size: 3.5rem; /* 56px */
   }
 }
 
