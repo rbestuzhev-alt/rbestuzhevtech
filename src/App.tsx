@@ -393,10 +393,7 @@ function App() {
             <span>Связаться</span>
           </button>
 
-          {/* Note under button */}
-          <p className="micro hero__note">
-            вы здесь по qr-коду с визитки — значит, всё работает
-          </p>
+
         </div>
       </main>
 
