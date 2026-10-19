@@ -42,6 +42,47 @@ function App() {
 
   // Master synchronized animation: SVG drawing + character-by-character typing
   useEffect(() => {
+    // Scale 4s on desktop (>760px) — Variant B: modify path coordinates directly
+    const scaleFours = () => {
+      if (!svgRef.current || window.innerWidth <= 760) return;
+      const svg = svgRef.current;
+      
+      const scaleFour = (pathEl: SVGPathElement, scale: number) => {
+        const d = pathEl.getAttribute('d') || '';
+        const numbers: number[] = [];
+        const regex = /-?\d+\.?\d*/g;
+        let match;
+        while ((match = regex.exec(d)) !== null) {
+          numbers.push(parseFloat(match[0]));
+        }
+        
+        const xs = numbers.filter((_, i) => i % 2 === 0);
+        const ys = numbers.filter((_, i) => i % 2 === 1);
+        const centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
+        const centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
+        
+        const scaledNumbers = numbers.map((val, i) => {
+          const center = i % 2 === 0 ? centerX : centerY;
+          return center + (val - center) * scale;
+        });
+        
+        let numIndex = 0;
+        const newD = d.replace(/-?\d+\.?\d*/g, () => {
+          return String(Math.round(scaledNumbers[numIndex++] * 100) / 100);
+        });
+        
+        pathEl.setAttribute('d', newD);
+      };
+      
+      const fourLeft = svg.querySelector('.svg-path--four-left') as SVGPathElement;
+      const fourRight = svg.querySelector('.svg-path--four-right') as SVGPathElement;
+      
+      if (fourLeft) scaleFour(fourLeft, 1.2);
+      if (fourRight) scaleFour(fourRight, 1.2);
+    };
+    
+    scaleFours();
+
     if (reducedMotion.current) {
       // Show everything immediately
       setGuidesVisible(true);
@@ -340,7 +381,7 @@ function App() {
               <g transform="translate(420 0) scale(-1 1)">
                 {/* First 4 (screen-right, shifted closer to 0: +15 X in paper coords, -6 Y) */}
                 <path
-                  className="svg-path"
+                  className="svg-path svg-path--four-left"
                   d="M 35 94 L 35 14 L 85 74 L 15 74"
                   stroke="var(--ink)"
                   strokeWidth="3"
@@ -360,7 +401,7 @@ function App() {
                 />
                 {/* Second 4 (screen-left, shifted closer to 0: -15 X in paper coords, -6 Y) */}
                 <path
-                  className="svg-path"
+                  className="svg-path svg-path--four-right"
                   d="M 355 92 L 355 12 L 405 72 L 335 72"
                   stroke="var(--ink)"
                   strokeWidth="3"
