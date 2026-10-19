@@ -404,10 +404,16 @@ body {
 
 .pen-dot {
   opacity: 0;
+  transform: scale(1);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity .7s cubic-bezier(.4, 0, .2, 1), transform .7s cubic-bezier(.4, 0, .2, 1);
 }
 
 .pen-dot.active {
   opacity: 1;
+  transform: scale(1);
+  transition-duration: .2s;
 }
 
 /* Reduced motion */
