@@ -178,6 +178,19 @@ body {
   gap: clamp(32px, 5vw, 56px);
 }
 
+.hero__cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .hero__cta-wrapper {
+    gap: 12px;
+  }
+}
+
 .hero__svg-wrap {
   width: clamp(280px, 60vw, 720px);
   max-width: 100%;
@@ -651,13 +664,7 @@ body {
   letter-spacing: 0.05em;
   color: var(--muted);
   text-align: center;
-  margin-top: 16px;
-}
-
-@media (max-width: 760px) {
-  .privacy-trigger {
-    margin-top: 12px;
-  }
+  margin-top: 0;
 }
 
 .privacy-link {

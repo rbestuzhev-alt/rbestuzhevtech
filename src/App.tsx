@@ -454,14 +454,16 @@ function App() {
             </span>
           </div>
 
-          {/* CTA button */}
-          <button className="hero__btn" onClick={scrollToContact}>
-            <span>Связаться</span>
-          </button>
+          {/* CTA button and privacy trigger wrapper */}
+          <div className="hero__cta-wrapper">
+            <button className="hero__btn" onClick={scrollToContact}>
+              <span>Связаться</span>
+            </button>
 
-          <p className="privacy-trigger">
-            Нажимая кнопку, вы соглашаетесь с <a href="#" className="privacy-link" onClick={(e) => { e.preventDefault(); openPrivacy(); }}>политикой конфиденциальности</a>
-          </p>
+            <p className="privacy-trigger">
+              Нажимая кнопку, вы соглашаетесь с <a href="#" className="privacy-link" onClick={(e) => { e.preventDefault(); openPrivacy(); }}>политикой конфиденциальности</a>
+            </p>
+          </div>
           </div>
         </div>
       </main>
