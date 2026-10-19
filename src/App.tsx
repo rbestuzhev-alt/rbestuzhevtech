@@ -347,7 +347,7 @@ function App() {
                 {/* Wavy underline */}
                 <path
                   className="svg-path"
-                  d="M 20 148 Q 60 140, 100 148 Q 140 156, 180 148 Q 220 140, 260 148 Q 300 156, 340 148 Q 370 142, 400 148"
+                  d="M 20 156 Q 60 148, 100 156 Q 140 164, 180 156 Q 220 148, 260 156 Q 300 164, 340 156 Q 370 150, 400 156"
                   stroke="var(--ink)"
                   strokeWidth="2"
                   strokeLinecap="round"
