@@ -314,10 +314,10 @@ function App() {
               role="img"
             >
               <g transform="translate(420 0) scale(-1 1)">
-                {/* First 4 (shifted: +20 up, +10 right on screen) */}
+                {/* First 4 (shifted: +20 up, +10 right on screen, +70 right to close gap) */}
                 <path
                   className="svg-path"
-                  d="M 20 100 L 20 20 L 70 80 L 0 80"
+                  d="M -50 100 L -50 20 L 0 80 L -70 80"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
@@ -334,10 +334,10 @@ function App() {
                   strokeLinejoin="round"
                   style={{ '--duration': '1.6s', '--delay': '1.2s' } as React.CSSProperties}
                 />
-                {/* Second 4 (shifted left-up on screen, +20 X to equalize gaps, -10 Y to lift) */}
+                {/* Second 4 (shifted: +20 up, +10 right on screen, -70 left to close gap) */}
                 <path
                   className="svg-path"
-                  d="M 370 98 L 370 18 L 420 78 L 350 78"
+                  d="M 440 98 L 440 18 L 490 78 L 420 78"
                   stroke="var(--ink)"
                   strokeWidth="3"
                   strokeLinecap="round"
