@@ -451,7 +451,7 @@ function App() {
         >
           <div>
             <p className="micro contact__label">MAX</p>
-            <span className="contact__value">Написать в MAX</span>
+            <span className="contact__value">+7 921 666 90 66</span>
           </div>
           <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">В MAX</a>
         </div>
