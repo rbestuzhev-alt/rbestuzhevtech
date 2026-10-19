@@ -304,13 +304,13 @@ body {
 .contact__action-btn {
   font-family: 'Manrope', sans-serif;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: .26em;
-  color: var(--ink);
+  letter-spacing: .2em;
+  color: var(--muted);
   background: transparent;
-  border: 1px solid var(--ink);
-  padding: 17px 44px;
+  border: 1px solid var(--hair);
+  padding: 10px 16px;
   cursor: pointer;
   transition: color .3s, border-color .3s, background-color .3s;
   white-space: nowrap;
