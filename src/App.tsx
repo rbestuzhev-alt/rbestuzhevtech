@@ -440,21 +440,21 @@ function App() {
           </button>
         </div>
 
-        {/* City */}
+        {/* Telegram */}
         <div
           className="contact__row"
           ref={(el) => { contactRowsRef.current[2] = el; }}
           data-delay="300"
         >
           <div>
-            <p className="micro contact__label">город</p>
-            <span className="contact__value">барнаул, алтайский край · 656000</span>
+            <p className="micro contact__label">телеграм</p>
+            <a id="tg" className="contact__value" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">@rbestuzhev</a>
           </div>
           <button
-            className={`contact__copy-btn ${copyStates['city'] ? 'success' : ''}`}
-            onClick={() => handleCopy('барнаул, алтайский край, 656000', 'city')}
+            className={`contact__copy-btn ${copyStates['telegram'] ? 'success' : ''}`}
+            onClick={() => handleCopy('@rbestuzhev', 'telegram')}
           >
-            {copyStates['city'] ? '✓ готово' : 'копировать'}
+            {copyStates['telegram'] ? '✓ готово' : 'копировать'}
           </button>
         </div>
 
