@@ -301,12 +301,7 @@ body {
   text-decoration: none;
 }
 
-.contact__value:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.contact__copy-btn {
+.contact__action-btn {
   font-family: 'Manrope', sans-serif;
   font-weight: 600;
   font-size: 11px;
@@ -317,18 +312,16 @@ body {
   border: 1px solid var(--hair);
   padding: .5rem 1rem;
   cursor: pointer;
-  transition: color .3s, border-color .3s;
+  transition: color .3s, border-color .3s, background-color .3s;
   white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.contact__copy-btn:hover {
-  color: var(--ink);
+.contact__action-btn:hover {
+  color: var(--paper);
   border-color: var(--ink);
-}
-
-.contact__copy-btn.success {
-  color: var(--ink);
-  border-color: var(--ink);
+  background-color: var(--ink);
 }
 
 .contact__note {

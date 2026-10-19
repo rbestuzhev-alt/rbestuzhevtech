@@ -412,14 +412,9 @@ function App() {
         >
           <div>
             <p className="micro contact__label">телефон</p>
-            <a className="contact__value" href="tel:+79216669066">+7 921 666 90 66</a>
+            <span className="contact__value">+7 921 666 90 66</span>
           </div>
-          <button
-            className={`contact__copy-btn ${copyStates['phone'] ? 'success' : ''}`}
-            onClick={() => handleCopy('+79216669066', 'phone')}
-          >
-            {copyStates['phone'] ? '✓ готово' : 'копировать'}
-          </button>
+          <a className="contact__action-btn" href="tel:+79216669066">Позвонить</a>
         </div>
 
         {/* Email */}
@@ -430,14 +425,9 @@ function App() {
         >
           <div>
             <p className="micro contact__label">почта</p>
-            <a className="contact__value" href="mailto:fullstack@bestuzhev.tech">fullstack@bestuzhev.tech</a>
+            <span className="contact__value">fullstack@bestuzhev.tech</span>
           </div>
-          <button
-            className={`contact__copy-btn ${copyStates['email'] ? 'success' : ''}`}
-            onClick={() => handleCopy('fullstack@bestuzhev.tech', 'email')}
-          >
-            {copyStates['email'] ? '✓ готово' : 'копировать'}
-          </button>
+          <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech">Написать</a>
         </div>
 
         {/* Telegram */}
@@ -448,14 +438,9 @@ function App() {
         >
           <div>
             <p className="micro contact__label">телеграм</p>
-            <a id="tg" className="contact__value" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">@rbestuzhev</a>
+            <span className="contact__value">@rbestuzhev</span>
           </div>
-          <button
-            className={`contact__copy-btn ${copyStates['telegram'] ? 'success' : ''}`}
-            onClick={() => handleCopy('@rbestuzhev', 'telegram')}
-          >
-            {copyStates['telegram'] ? '✓ готово' : 'копировать'}
-          </button>
+          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">Написать</a>
         </div>
 
         {/* MAX */}
@@ -466,14 +451,9 @@ function App() {
         >
           <div>
             <p className="micro contact__label">MAX</p>
-            <a id="max" className="contact__value" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">Написать в MAX</a>
+            <span className="contact__value">Написать в MAX</span>
           </div>
-          <button
-            className={`contact__copy-btn ${copyStates['max'] ? 'success' : ''}`}
-            onClick={() => handleCopy('https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk', 'max')}
-          >
-            {copyStates['max'] ? '✓ готово' : 'копировать'}
-          </button>
+          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">Написать</a>
         </div>
 
         <p className="contact__note">
