@@ -185,9 +185,9 @@ body {
   gap: 16px;
 }
 
-@media (max-width: 760px) {
+@media (hover: none) and (pointer: coarse) {
   .hero__cta-wrapper {
-    gap: 12px;
+    gap: 14px;
   }
 }
 
