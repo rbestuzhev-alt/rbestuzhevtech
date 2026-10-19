@@ -216,7 +216,8 @@ body {
   z-index: 1;
   box-sizing: border-box;
   text-decoration: none;
-  transition: transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, background .12s ease, color .12s ease;
 }
 
 .hero__btn::after {
@@ -241,11 +242,13 @@ body {
 
 .hero__btn:active {
   transform: scale(.97);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .hero__btn span {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 
