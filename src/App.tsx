@@ -40,65 +40,6 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Scale 4s on desktop (>760px)
-  useEffect(() => {
-    const scaleFours = () => {
-      if (!svgRef.current) return;
-      
-      const svg = svgRef.current;
-      const fourLeft = svg.querySelector('.svg-path--four-left') as SVGPathElement;
-      const fourRight = svg.querySelector('.svg-path--four-right') as SVGPathElement;
-      
-      if (!fourLeft || !fourRight) return;
-      
-      // Original coordinates (from JSX)
-      const originalLeft = 'M 35 94 L 35 14 L 85 74 L 15 74';
-      const originalRight = 'M 355 92 L 355 12 L 405 72 L 335 72';
-      
-      const scaleFour = (pathEl: SVGPathElement, originalD: string, scale: number) => {
-        if (window.innerWidth <= 760) {
-          // Reset to original on mobile
-          pathEl.setAttribute('d', originalD);
-          return;
-        }
-        
-        const numbers: number[] = [];
-        const regex = /-?\d+\.?\d*/g;
-        let match;
-        while ((match = regex.exec(originalD)) !== null) {
-          numbers.push(parseFloat(match[0]));
-        }
-        
-        const xs = numbers.filter((_, i) => i % 2 === 0);
-        const ys = numbers.filter((_, i) => i % 2 === 1);
-        const centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
-        const centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
-        
-        const scaledNumbers = numbers.map((val, i) => {
-          const center = i % 2 === 0 ? centerX : centerY;
-          return center + (val - center) * scale;
-        });
-        
-        let numIndex = 0;
-        const newD = originalD.replace(/-?\d+\.?\d*/g, () => {
-          return String(Math.round(scaledNumbers[numIndex++] * 100) / 100);
-        });
-        
-        pathEl.setAttribute('d', newD);
-      };
-      
-      scaleFour(fourLeft, originalLeft, 1.2);
-      scaleFour(fourRight, originalRight, 1.2);
-    };
-    
-    // Apply scaling
-    scaleFours();
-    
-    // Handle resize
-    window.addEventListener('resize', scaleFours);
-    return () => window.removeEventListener('resize', scaleFours);
-  }, []);
-
   // Master synchronized animation: SVG drawing + character-by-character typing
   useEffect(() => {
 
@@ -120,6 +61,47 @@ function App() {
     if (!svgRef.current) return;
 
     const svg = svgRef.current;
+
+    // Scale 4s on desktop (>760px) — Variant B: modify path coordinates directly
+    if (window.innerWidth > 760) {
+      const scaleFour = (pathEl: SVGPathElement, scale: number) => {
+        const d = pathEl.getAttribute('d') || '';
+        // Parse all numbers from the path
+        const numbers: number[] = [];
+        const regex = /-?\d+\.?\d*/g;
+        let match;
+        while ((match = regex.exec(d)) !== null) {
+          numbers.push(parseFloat(match[0]));
+        }
+        
+        // Find bounding box center
+        const xs = numbers.filter((_, i) => i % 2 === 0);
+        const ys = numbers.filter((_, i) => i % 2 === 1);
+        const centerX = (Math.min(...xs) + Math.max(...xs)) / 2;
+        const centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
+        
+        // Scale coordinates relative to center
+        const scaledNumbers = numbers.map((val, i) => {
+          const center = i % 2 === 0 ? centerX : centerY;
+          return center + (val - center) * scale;
+        });
+        
+        // Reconstruct path string
+        let newD = d;
+        let numIndex = 0;
+        newD = d.replace(/-?\d+\.?\d*/g, () => {
+          return String(Math.round(scaledNumbers[numIndex++] * 100) / 100);
+        });
+        
+        pathEl.setAttribute('d', newD);
+      };
+      
+      const fourLeft = svg.querySelector('.svg-path--four-left') as SVGPathElement;
+      const fourRight = svg.querySelector('.svg-path--four-right') as SVGPathElement;
+      
+      if (fourLeft) scaleFour(fourLeft, 1.2);
+      if (fourRight) scaleFour(fourRight, 1.2);
+    }
 
     // SVG timings (seconds) — unchanged
     const timings = [
