@@ -674,9 +674,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .privacy-modal.active {
@@ -687,16 +687,16 @@ body {
 .privacy-modal__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(21, 32, 46, 0);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  transition: background 0.4s ease, backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease;
-}
-
-.privacy-modal.active .privacy-modal__overlay {
   background: rgba(21, 32, 46, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.privacy-modal.active .privacy-modal__overlay {
+  opacity: 1;
 }
 
 .privacy-modal__content {
@@ -710,12 +710,15 @@ body {
   border-radius: 4px;
   overflow-y: auto;
   transform: translateY(30px);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  will-change: transform, opacity;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .privacy-modal.active .privacy-modal__content {
   transform: translateY(0);
+  opacity: 1;
 }
 
 .privacy-modal__close {
