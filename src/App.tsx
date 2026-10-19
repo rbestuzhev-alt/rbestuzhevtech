@@ -393,10 +393,6 @@ function App() {
             <span>Связаться</span>
           </button>
 
-          <p className="micro hero__note">
-            Отвечу вам в течении дня
-          </p>
-
 
         </div>
       </main>
