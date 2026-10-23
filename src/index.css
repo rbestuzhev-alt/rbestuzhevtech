@@ -751,7 +751,7 @@ body {
 }
 
 .privacy-modal__title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', serif !important;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   color: var(--ink);
