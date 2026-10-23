@@ -337,7 +337,9 @@ function App() {
     e.preventDefault();
     const el = document.getElementById('contact');
     if (el) {
-      el.scrollIntoView({ behavior: reducedMotion.current ? 'auto' : 'smooth' });
+      const offset = window.innerWidth <= 760 ? 160 : 320;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: reducedMotion.current ? 'auto' : 'smooth' });
     }
   };
 
