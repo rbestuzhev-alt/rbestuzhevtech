@@ -505,7 +505,7 @@ function App() {
         >
           <p className="micro contact__label">телефон</p>
           <span className="contact__value">+7 921 666 90 66</span>
-          <a className="contact__action-btn" href="tel:+79216669066">
+          <a className="contact__action-btn" href="tel:+79216669066" aria-label="Позвонить по номеру +7 921 666 90 66">
             <span>Позвонить</span>
             <span className="arrow">→</span>
           </a>
@@ -519,7 +519,7 @@ function App() {
         >
           <p className="micro contact__label">почта</p>
           <span className="contact__value">fullstack@bestuzhev.tech</span>
-          <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech">
+          <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech" aria-label="Написать на почту fullstack@bestuzhev.tech">
             <span>Написать</span>
             <span className="arrow">→</span>
           </a>
@@ -533,7 +533,7 @@ function App() {
         >
           <p className="micro contact__label">Telegram</p>
           <span className="contact__value">rbestuzhev</span>
-          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener">
+          <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram @rbestuzhev">
             <span>В Telegram</span>
             <span className="arrow">→</span>
           </a>
@@ -547,7 +547,7 @@ function App() {
         >
           <p className="micro contact__label">MAX</p>
           <span className="contact__value">Роман Бестужев</span>
-          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener">
+          <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX Роману Бестужеву">
             <span>В MAX</span>
             <span className="arrow">→</span>
           </a>
@@ -570,11 +570,11 @@ function App() {
       </div>
 
       {/* Privacy Modal */}
-      <div id="privacy-modal" className={`privacy-modal ${privacyModalOpen ? 'active' : ''}`} aria-hidden={!privacyModalOpen}>
+      <div id="privacy-modal" className={`privacy-modal ${privacyModalOpen ? 'active' : ''}`} role="dialog" aria-modal="true" aria-labelledby="privacy-title" aria-hidden={!privacyModalOpen}>
         <div className="privacy-modal__overlay" onClick={closePrivacy}></div>
         <div className="privacy-modal__content">
-          <button className="privacy-modal__close" onClick={closePrivacy} aria-label="Закрыть">&times;</button>
-          <h2 className="privacy-modal__title"><em>политика</em> конфиденциальности</h2>
+          <button className="privacy-modal__close" onClick={closePrivacy} aria-label="Закрыть окно политики конфиденциальности">&times;</button>
+          <h2 className="privacy-modal__title" id="privacy-title"><em>политика</em> конфиденциальности</h2>
           <div className="privacy-modal__text">
             <p><strong>01 — Цель.</strong> Обработка ваших обращений, поступивших через телефон, почту, Telegram или MAX, для связи и обсуждения задач.</p>
             <p><strong>02 — Данные.</strong> Мы обрабатываем только те данные, которые вы добровольно предоставляете (имя, номер телефона, адрес электронной почты, текст сообщения).</p>

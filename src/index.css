@@ -96,7 +96,7 @@ body {
 
 /* Hero section */
 .hero {
-  min-height: calc(100svh - 60px);
+  min-height: calc(100dvh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
