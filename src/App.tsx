@@ -265,7 +265,7 @@ function App() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
             const el = entry.target as HTMLElement;
             const delay = parseInt(el.dataset.delay || '0', 10);
             setTimeout(() => el.classList.add('visible'), delay);
