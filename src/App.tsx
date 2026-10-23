@@ -552,7 +552,7 @@ function App() {
         <div className="privacy-modal__overlay" onClick={closePrivacy}></div>
         <div className="privacy-modal__content">
           <button className="privacy-modal__close" onClick={closePrivacy} aria-label="Закрыть">&times;</button>
-          <h2 className="privacy-modal__title"><em>политика</em> конфиденциальности</h2>
+          <h2 className="privacy-modal__title">политика конфиденциальности</h2>
           <div className="privacy-modal__text">
             <p><strong>01 — Цель.</strong> Обработка ваших обращений, поступивших через телефон, почту, Telegram или MAX, для связи и обсуждения задач.</p>
             <p><strong>02 — Данные.</strong> Мы обрабатываем только те данные, которые вы добровольно предоставляете (имя, номер телефона, адрес электронной почты, текст сообщения).</p>
