@@ -7,6 +7,7 @@ function App() {
   const [toastText, setToastText] = useState('');
   const [copyStates, setCopyStates] = useState<Record<string, boolean>>({});
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [animationsReady, setAnimationsReady] = useState(false);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const decodingRef1 = useRef<HTMLSpanElement>(null);
@@ -20,6 +21,22 @@ function App() {
   // Check reduced motion preference
   useEffect(() => {
     reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  // Delay all animations by 1 second after page load
+  useEffect(() => {
+    const handleLoad = () => {
+      setTimeout(() => {
+        setAnimationsReady(true);
+      }, 1000);
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
   }, []);
 
   // Clock
@@ -42,6 +59,7 @@ function App() {
 
   // Master synchronized animation: SVG drawing + character-by-character typing
   useEffect(() => {
+    if (!animationsReady) return;
 
     if (reducedMotion.current) {
       // Show everything immediately
@@ -251,10 +269,12 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [animationsReady]);
 
   // IntersectionObserver for contact rows
   useEffect(() => {
+    if (!animationsReady) return;
+
     if (reducedMotion.current) {
       contactRowsRef.current.forEach((row) => {
         if (row) row.classList.add('visible');
@@ -281,7 +301,7 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [animationsReady]);
 
   // Copy to clipboard
   const handleCopy = useCallback(async (text: string, id: string) => {
