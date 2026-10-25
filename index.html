@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <script>document.documentElement.classList.add('js');</script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Роман Бестужев — Fullstack-разработчик</title>
@@ -182,32 +182,9 @@
       height: auto;
     }
 
-    /* SVG paths — hidden until JS starts */
-    .svg-path {
-      stroke-dasharray: 3000;
-      stroke-dashoffset: 3000;
-      transition: none;
-    }
 
-    /* Guides */
-    .guides {
-      opacity: 0;
-      transition: opacity .8s ease;
-    }
-    .guides.visible { opacity: 1; }
 
-    /* Pen dots — hidden by default via inline style + CSS */
-    .pen-dot {
-      opacity: 0;
-      transform-box: fill-box;
-      transform-origin: center;
-      transition: opacity 0.3s ease;
-    }
-    .pen-dot.active { opacity: 1; }
-    .pen-dot.fading { opacity: 0; transition: opacity 0.5s ease; }
-    .pen-dot--final.fading { transition-duration: .7s; }
-
-    /* Decoding text */
+    /* Decoding text — visible immediately */
     .hero__scramble {
       font-family: var(--sans);
       font-weight: 600;
@@ -220,45 +197,9 @@
 
     .hero__scramble-line {
       display: block;
-      position: relative;
     }
 
-    .hero__scramble-ghost {
-      visibility: hidden;
-      display: block;
-    }
 
-    .hero__scramble-text {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-    }
-
-    .hero__scramble-visible {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-    }
-
-    .js .hero__scramble-visible {
-      visibility: hidden;
-    }
-
-    .decoding { display: none; }
-    .js .decoding { display: inline; }
-
-    .js .decoding span {
-      opacity: 0;
-      filter: blur(2px);
-      transition: opacity .16s ease, filter .16s ease;
-    }
-
-    .js .decoding.active span {
-      opacity: 1;
-      filter: blur(0);
-    }
 
     /* CTA button */
     .hero__cta-wrapper {
@@ -374,7 +315,7 @@
       text-align: center;
     }
 
-    /* Contact rows — hidden by default, animated via CSS */
+    /* Contact rows — visible immediately */
     .contact__row {
       display: flex;
       flex-direction: column;
@@ -382,8 +323,6 @@
       justify-content: center;
       gap: 16px;
       padding: 32px 0;
-      opacity: 0;
-      transform: translateY(20px);
       text-align: center;
       width: 100%;
     }
@@ -395,23 +334,6 @@
       height: 1px;
       background: var(--hair);
       margin: 0 auto 16px auto;
-    }
-
-    /* CSS animation triggered by body.animations-ready */
-    body.animations-ready .contact__row {
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    body.animations-ready .contact__row:nth-of-type(1) { animation-delay: 0s; }
-    body.animations-ready .contact__row:nth-of-type(2) { animation-delay: 0.15s; }
-    body.animations-ready .contact__row:nth-of-type(3) { animation-delay: 0.3s; }
-    body.animations-ready .contact__row:nth-of-type(4) { animation-delay: 0.45s; }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .contact__label {
@@ -640,38 +562,7 @@
       opacity: 1;
     }
 
-    /* ═══════════════════════════════════════
-       REDUCED MOTION
-       ═══════════════════════════════════════ */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
 
-      html { scroll-behavior: auto; }
-
-      .svg-path {
-        stroke-dashoffset: 0 !important;
-        stroke-dasharray: none !important;
-      }
-
-      .pen-dot { display: none !important; }
-      .guides { opacity: 1 !important; }
-
-      .contact__row {
-        opacity: 1 !important;
-        transform: none !important;
-        animation: none !important;
-      }
-
-      .decoding span {
-        opacity: 1 !important;
-        filter: none !important;
-        transition: none !important;
-      }
-    }
 
     /* ═══════════════════════════════════════
        RESPONSIVE
@@ -789,42 +680,30 @@
       <div class="hero__column">
         <!-- SVG 404 -->
         <div class="hero__svg-wrap">
-          <svg id="svg404" viewBox="0 0 420 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="404" role="img">
+          <svg viewBox="0 0 420 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="404" role="img">
             <g transform="translate(420 0) scale(-1 1)">
               <!-- First 4 -->
-              <path class="svg-path svg-path--four-left" d="M 35 94 L 35 14 L 85 74 L 15 74" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 35 94 L 35 14 L 85 74 L 15 74" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               <!-- 0 -->
-              <path class="svg-path" d="M 175 74 C 175 39, 195 19, 215 19 C 235 19, 255 39, 255 74 C 255 109, 235 129, 215 129 C 195 129, 175 109, 175 74 C 175 66, 177 59, 180 54" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 175 74 C 175 39, 195 19, 215 19 C 235 19, 255 39, 255 74 C 255 109, 235 129, 215 129 C 195 129, 175 109, 175 74 C 175 66, 177 59, 180 54" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               <!-- Second 4 -->
-              <path class="svg-path svg-path--four-right" d="M 355 92 L 355 12 L 405 72 L 335 72" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 355 92 L 355 12 L 405 72 L 335 72" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               <!-- Wavy underline -->
-              <path class="svg-path" d="M 20 152 Q 60 144, 100 152 Q 140 160, 180 152 Q 220 144, 260 152 Q 300 160, 340 152 Q 370 146, 400 152" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" />
+              <path d="M 20 152 Q 60 144, 100 152 Q 140 160, 180 152 Q 220 144, 260 152 Q 300 160, 340 152 Q 370 146, 400 152" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none" />
               <!-- Guides -->
-              <g class="guides" id="guides">
+              <g class="guides">
                 <line x1="210" y1="10" x2="210" y2="155" stroke="var(--hair)" stroke-width="0.5" />
                 <line x1="10" y1="80" x2="410" y2="80" stroke="var(--hair)" stroke-width="0.5" />
               </g>
-              <!-- Pen dots — CRITICAL: inline style="opacity: 0" for Safari -->
-              <circle class="pen-dot pen-dot--0" cx="0" cy="0" r="4" fill="var(--ink)" style="opacity: 0" />
-              <circle class="pen-dot pen-dot--1" cx="0" cy="0" r="4" fill="var(--ink)" style="opacity: 0" />
-              <circle class="pen-dot pen-dot--2" cx="0" cy="0" r="4" fill="var(--ink)" style="opacity: 0" />
-              <circle class="pen-dot pen-dot--3 pen-dot--final" cx="0" cy="0" r="4" fill="var(--ink)" style="opacity: 0" />
+
             </g>
           </svg>
         </div>
 
         <!-- Decoding text -->
-        <div class="hero__scramble" aria-live="polite">
-          <span class="hero__scramble-line">
-            <span class="hero__scramble-ghost" aria-hidden="true">Пока тут ничего нет,</span>
-            <span class="hero__scramble-text decoding" id="decoding1" aria-hidden="true"></span>
-            <span class="hero__scramble-visible">Пока тут ничего нет,</span>
-          </span>
-          <span class="hero__scramble-line">
-            <span class="hero__scramble-ghost" aria-hidden="true">но не переживайте — я найду для вас решение.</span>
-            <span class="hero__scramble-text decoding" id="decoding2" aria-hidden="true"></span>
-            <span class="hero__scramble-visible">но не переживайте — я найду для вас решение.</span>
-          </span>
+        <div class="hero__scramble">
+          <span class="hero__scramble-line">Пока тут ничего нет,</span>
+          <span class="hero__scramble-line">но не переживайте — я найду для вас решение.</span>
         </div>
 
         <!-- CTA + Privacy -->
@@ -913,27 +792,11 @@
     </div>
   </div>
 
-  <noscript>
-    <style>
-      .svg-path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
-      .decoding { display: none !important; }
-      .hero__scramble-visible { visibility: visible !important; }
-      .contact__row { opacity: 1 !important; transform: none !important; animation: none !important; }
-    </style>
-  </noscript>
+
 
   <script>
     (function() {
       'use strict';
-
-      // ═══════════════════════════════════════
-      // UTILITIES
-      // ═══════════════════════════════════════
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const smoothstep = (t) => {
-        const c = Math.max(0, Math.min(1, t));
-        return c * c * (3 - 2 * c);
-      };
 
       // ═══════════════════════════════════════
       // CLOCK
@@ -951,224 +814,6 @@
       setInterval(updateClock, 1000);
 
       // ═══════════════════════════════════════
-      // DECODING TEXT SETUP
-      // ═══════════════════════════════════════
-      const line1 = 'Пока тут ничего нет,';
-      const line2 = 'но не переживайте — я найду для вас решение.';
-
-      function setupDecoding(el, text) {
-        el.innerHTML = '';
-        text.split('').forEach(char => {
-          const span = document.createElement('span');
-          span.textContent = char;
-          el.appendChild(span);
-        });
-      }
-
-      const decoding1 = document.getElementById('decoding1');
-      const decoding2 = document.getElementById('decoding2');
-      setupDecoding(decoding1, line1);
-      setupDecoding(decoding2, line2);
-
-      // ═══════════════════════════════════════
-      // SVG 404 SCALING (desktop only)
-      // ═══════════════════════════════════════
-      const svg = document.getElementById('svg404');
-      const paths = svg.querySelectorAll('.svg-path');
-      const pens = svg.querySelectorAll('.pen-dot');
-      const guidesEl = document.getElementById('guides');
-
-      function scaleFour(pathEl, scale) {
-        const d = pathEl.getAttribute('d') || '';
-        const numbers = [];
-        const regex = /-?\d+\.?\d*/g;
-        let match;
-        while ((match = regex.exec(d)) !== null) {
-          numbers.push(parseFloat(match[0]));
-        }
-        const xs = numbers.filter((_, i) => i % 2 === 0);
-        const ys = numbers.filter((_, i) => i % 2 === 1);
-        const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-        const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-        const scaled = numbers.map((val, i) => {
-          const center = i % 2 === 0 ? cx : cy;
-          return center + (val - center) * scale;
-        });
-        let idx = 0;
-        pathEl.setAttribute('d', d.replace(/-?\d+\.?\d*/g, () =>
-          String(Math.round(scaled[idx++] * 100) / 100)
-        ));
-      }
-
-      if (window.innerWidth > 760) {
-        const fl = svg.querySelector('.svg-path--four-left');
-        const fr = svg.querySelector('.svg-path--four-right');
-        if (fl) scaleFour(fl, 1.2);
-        if (fr) scaleFour(fr, 1.2);
-      }
-
-      // ═══════════════════════════════════════
-      // ANIMATION TIMINGS
-      // ═══════════════════════════════════════
-      const timings = [
-        { delay: 0, duration: 1.2 },
-        { delay: 1.2, duration: 1.6 },
-        { delay: 2.8, duration: 1.2 },
-        { delay: 4.0, duration: 1.4 },
-      ];
-      const D = timings[timings.length - 1].delay + timings[timings.length - 1].duration;
-
-      // ═══════════════════════════════════════
-      // INIT PATHS & PENS
-      // ═══════════════════════════════════════
-      const pathData = [];
-      paths.forEach((el, i) => {
-        const length = el.getTotalLength();
-        el.style.strokeDasharray = String(length);
-        el.style.strokeDashoffset = String(length);
-        pathData.push({ el, length, delay: timings[i].delay, duration: timings[i].duration });
-      });
-
-      // Pre-set pen positions and ensure hidden (inline style for Safari)
-      pathData.forEach((data, i) => {
-        if (pens[i]) {
-          const pt = data.el.getPointAtLength(0);
-          pens[i].setAttribute('cx', String(pt.x));
-          pens[i].setAttribute('cy', String(pt.y));
-          pens[i].style.opacity = '0';
-        }
-      });
-
-      // ═══════════════════════════════════════
-      // DECODING TEXT TIMING
-      // ═══════════════════════════════════════
-      const len1 = line1.length;
-      const len2 = line2.length;
-      const w1 = len1 / (len1 + len2);
-      const d1 = D * w1;
-      const d2 = D - d1;
-
-      decoding1.querySelectorAll('span').forEach((span, i) => {
-        span.style.transitionDelay = ((i / len1) * d1) + 's';
-      });
-      decoding2.querySelectorAll('span').forEach((span, i) => {
-        span.style.transitionDelay = (d1 + (i / len2) * d2) + 's';
-      });
-
-      // ═══════════════════════════════════════
-      // REDUCED MOTION
-      // ═══════════════════════════════════════
-      if (reducedMotion) {
-        guidesEl.classList.add('visible');
-        pathData.forEach(({ el }) => {
-          el.style.strokeDashoffset = '0';
-        });
-        pens.forEach(pen => {
-          pen.style.opacity = '1';
-          pen.classList.add('active');
-        });
-        decoding1.classList.add('active');
-        decoding2.classList.add('active');
-        document.body.classList.add('animations-ready');
-        return;
-      }
-
-      // ═══════════════════════════════════════
-      // MAIN ANIMATION LOOP
-      // ═══════════════════════════════════════
-      let t0 = null;
-      let rafId = 0;
-      let finished = false;
-      let prevActiveIdx = -1;
-
-      function tick(now) {
-        if (t0 === null) t0 = now;
-        const elapsed = (now - t0) / 1000;
-
-        // Find active path
-        let activeIdx = -1;
-        for (let i = 0; i < pathData.length; i++) {
-          const { delay, duration } = pathData[i];
-          if (elapsed >= delay && elapsed < delay + duration) {
-            activeIdx = i;
-            break;
-          }
-        }
-
-        // Handle pen transitions
-        if (activeIdx !== prevActiveIdx) {
-          if (prevActiveIdx >= 0 && prevActiveIdx < pens.length) {
-            pens[prevActiveIdx].style.opacity = '0';
-            pens[prevActiveIdx].classList.remove('active');
-            pens[prevActiveIdx].classList.add('fading');
-          }
-          prevActiveIdx = activeIdx;
-        }
-
-        // Finalize completed paths
-        for (let i = 0; i < pathData.length; i++) {
-          const { el, length, delay, duration } = pathData[i];
-          if (elapsed >= delay + duration) {
-            el.style.strokeDashoffset = '0';
-          } else if (elapsed < delay) {
-            el.style.strokeDashoffset = String(length);
-          }
-        }
-
-        // Draw active path + activate pen
-        if (activeIdx !== -1) {
-          const { el, length, delay, duration } = pathData[activeIdx];
-          const localT = (elapsed - delay) / duration;
-
-          if (localT >= 0 && !pens[activeIdx].classList.contains('active')) {
-            pens[activeIdx].style.opacity = '1';
-            pens[activeIdx].classList.remove('fading');
-            pens[activeIdx].classList.add('active');
-          }
-
-          const e = smoothstep(localT);
-          el.style.strokeDashoffset = String(length * (1 - e));
-          const pt = el.getPointAtLength(length * e);
-          pens[activeIdx].setAttribute('cx', String(pt.x));
-          pens[activeIdx].setAttribute('cy', String(pt.y));
-        }
-
-        // Check completion
-        if (elapsed >= D) {
-          if (!finished) {
-            finished = true;
-            pathData.forEach(({ el }) => { el.style.strokeDashoffset = '0'; });
-            const last = pathData.length - 1;
-            if (last < pens.length) {
-              pens[last].style.opacity = '0';
-              pens[last].classList.remove('active');
-              pens[last].classList.add('fading');
-            }
-            setTimeout(() => guidesEl.classList.add('visible'), 400);
-          }
-          return;
-        }
-
-        rafId = requestAnimationFrame(tick);
-      }
-
-      // ═══════════════════════════════════════
-      // START AFTER 1 SECOND DELAY
-      // ═══════════════════════════════════════
-      function startAnimations() {
-        decoding1.classList.add('active');
-        decoding2.classList.add('active');
-        rafId = requestAnimationFrame(tick);
-        document.body.classList.add('animations-ready');
-      }
-
-      if (document.readyState === 'complete') {
-        setTimeout(startAnimations, 1000);
-      } else {
-        window.addEventListener('load', () => setTimeout(startAnimations, 1000));
-      }
-
-      // ═══════════════════════════════════════
       // CTA BUTTON — scroll to contact
       // ═══════════════════════════════════════
       document.getElementById('cta-btn').addEventListener('click', (e) => {
@@ -1177,7 +822,7 @@
         if (el) {
           const offset = window.innerWidth <= 760 ? 160 : 320;
           const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' });
+          window.scrollTo({ top, behavior: 'smooth' });
         }
       });
 
