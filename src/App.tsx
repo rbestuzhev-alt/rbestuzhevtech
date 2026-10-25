@@ -147,22 +147,18 @@ function App() {
     // Initialize pen dots — one per path
     const pens = svg.querySelectorAll('.pen-dot') as NodeListOf<SVGCircleElement>;
 
-    // Pre-set pen positions and schedule activation synchronized with path delays
-    const penTimers: number[] = [];
+    // Ensure all pens are hidden initially
+    pens.forEach((pen) => {
+      pen.classList.remove('active');
+      pen.classList.remove('fading');
+    });
+
+    // Pre-set pen positions at the start of each path
     pathData.forEach((data, i) => {
       if (pens[i]) {
-        // Set initial position at the start of the path
         const startPt = data.el.getPointAtLength(0);
         pens[i].setAttribute('cx', String(startPt.x));
         pens[i].setAttribute('cy', String(startPt.y));
-        
-        // Activate pen exactly when path drawing begins
-        const delayMs = data.delay * 1000;
-        const timer = window.setTimeout(() => {
-          pens[i].classList.remove('fading');
-          pens[i].classList.add('active');
-        }, delayMs);
-        penTimers.push(timer);
       }
     });
 
@@ -277,7 +273,6 @@ function App() {
 
     return () => {
       cancelAnimationFrame(rafId);
-      penTimers.forEach(timer => clearTimeout(timer));
     };
   }, [animationsReady]);
 
