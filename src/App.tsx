@@ -72,6 +72,9 @@ function App() {
           el.style.strokeDasharray = String(length);
           el.style.strokeDashoffset = '0';
         });
+        // Show all pens immediately
+        const pens = svgRef.current.querySelectorAll('.pen-dot') as NodeListOf<SVGCircleElement>;
+        pens.forEach((pen) => pen.classList.add('active'));
       }
       return;
     }
@@ -145,6 +148,25 @@ function App() {
     // Initialize pen dots — one per path
     const pens = svg.querySelectorAll('.pen-dot') as NodeListOf<SVGCircleElement>;
 
+    // Pre-set pen positions and schedule activation synchronized with path delays
+    const penTimers: number[] = [];
+    pathData.forEach((data, i) => {
+      if (pens[i]) {
+        // Set initial position at the start of the path
+        const startPt = data.el.getPointAtLength(0);
+        pens[i].setAttribute('cx', String(startPt.x));
+        pens[i].setAttribute('cy', String(startPt.y));
+        
+        // Activate pen exactly when path drawing begins
+        const delayMs = data.delay * 1000;
+        const timer = window.setTimeout(() => {
+          pens[i].classList.remove('fading');
+          pens[i].classList.add('active');
+        }, delayMs);
+        penTimers.push(timer);
+      }
+    });
+
     // Character typing distribution: proportional to string lengths
     const len1 = line1.length;
     const len2 = line2.length;
@@ -194,24 +216,12 @@ function App() {
         }
       }
 
-      // Handle pen transitions
+      // Handle pen transitions (fade out only — activation is handled by setTimeout)
       if (activeIdx !== prevActiveIdx) {
         // Fade out previous pen
         if (prevActiveIdx >= 0 && prevActiveIdx < pens.length) {
           pens[prevActiveIdx].classList.remove('active');
           pens[prevActiveIdx].classList.add('fading');
-        }
-        // Activate new pen at start position
-        if (activeIdx >= 0 && activeIdx < pens.length) {
-          const { el } = pathData[activeIdx];
-          const startPt = el.getPointAtLength(0);
-          pens[activeIdx].setAttribute('cx', String(startPt.x));
-          pens[activeIdx].setAttribute('cy', String(startPt.y));
-          pens[activeIdx].classList.remove('fading');
-          // Use rAF to ensure class removal is processed before adding active
-          requestAnimationFrame(() => {
-            pens[activeIdx].classList.add('active');
-          });
         }
         prevActiveIdx = activeIdx;
       }
@@ -268,6 +278,7 @@ function App() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      penTimers.forEach(timer => clearTimeout(timer));
     };
   }, [animationsReady]);
 
