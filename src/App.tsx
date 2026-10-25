@@ -73,7 +73,10 @@ function App() {
         });
         // Show all pens immediately
         const pens = svgRef.current.querySelectorAll('.pen-dot') as NodeListOf<SVGCircleElement>;
-        pens.forEach((pen) => pen.classList.add('active'));
+        pens.forEach((pen) => {
+          pen.style.opacity = '1';
+          pen.classList.add('active');
+        });
       }
       return;
     }
@@ -215,6 +218,7 @@ function App() {
       if (activeIdx !== prevActiveIdx) {
         // Fade out previous pen
         if (prevActiveIdx >= 0 && prevActiveIdx < pens.length) {
+          pens[prevActiveIdx].style.opacity = '0';
           pens[prevActiveIdx].classList.remove('active');
           pens[prevActiveIdx].classList.add('fading');
         }
@@ -239,6 +243,7 @@ function App() {
         
         // Activate pen only when path starts drawing (localT >= 0)
         if (localT >= 0 && !pens[activeIdx].classList.contains('active')) {
+          pens[activeIdx].style.opacity = '1';
           pens[activeIdx].classList.remove('fading');
           pens[activeIdx].classList.add('active');
         }
@@ -261,6 +266,7 @@ function App() {
           // Fade out last pen
           const lastPenIdx = pathData.length - 1;
           if (lastPenIdx < pens.length) {
+            pens[lastPenIdx].style.opacity = '0';
             pens[lastPenIdx].classList.remove('active');
             pens[lastPenIdx].classList.add('fading');
           }
@@ -439,10 +445,10 @@ function App() {
                   <line x1="10" y1="80" x2="410" y2="80" stroke="var(--hair)" strokeWidth="0.5" />
                 </g>
                 {/* Pen dots — one per path */}
-                <circle className="pen-dot pen-dot--0" cx="0" cy="0" r="4" fill="var(--ink)" />
-                <circle className="pen-dot pen-dot--1" cx="0" cy="0" r="4" fill="var(--ink)" />
-                <circle className="pen-dot pen-dot--2" cx="0" cy="0" r="4" fill="var(--ink)" />
-                <circle className="pen-dot pen-dot--3 pen-dot--final" cx="0" cy="0" r="4" fill="var(--ink)" />
+                <circle className="pen-dot pen-dot--0" cx="0" cy="0" r="4" fill="var(--ink)" style={{ opacity: 0 }} />
+                <circle className="pen-dot pen-dot--1" cx="0" cy="0" r="4" fill="var(--ink)" style={{ opacity: 0 }} />
+                <circle className="pen-dot pen-dot--2" cx="0" cy="0" r="4" fill="var(--ink)" style={{ opacity: 0 }} />
+                <circle className="pen-dot pen-dot--3 pen-dot--final" cx="0" cy="0" r="4" fill="var(--ink)" style={{ opacity: 0 }} />
               </g>
             </svg>
           </div>
