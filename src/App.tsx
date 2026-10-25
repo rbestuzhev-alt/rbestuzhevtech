@@ -282,17 +282,21 @@ function App() {
     };
   }, [animationsReady]);
 
-  // IntersectionObserver for contact rows
+  // IntersectionObserver for contact rows (desktop only)
   useEffect(() => {
     if (!animationsReady) return;
 
-    if (reducedMotion.current) {
+    const isMobile = window.innerWidth <= 760 || 'ontouchstart' in window;
+
+    // On mobile or reduced motion, show all rows immediately
+    if (isMobile || reducedMotion.current) {
       contactRowsRef.current.forEach((row) => {
         if (row) row.classList.add('visible');
       });
       return;
     }
 
+    // On desktop, use IntersectionObserver for scroll-triggered animation
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

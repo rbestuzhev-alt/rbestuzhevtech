@@ -353,6 +353,15 @@ body {
   transform: translateY(0);
 }
 
+/* Mobile: show immediately without animation to prevent flickering on iOS Safari */
+@media (max-width: 760px) {
+  .contact__row {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .contact__label {
   margin-bottom: 0;
   text-align: center;
