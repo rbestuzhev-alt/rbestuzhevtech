@@ -236,6 +236,13 @@ function App() {
       if (activeIdx !== -1) {
         const { el, length, delay, duration } = pathData[activeIdx];
         const localT = (elapsed - delay) / duration;
+        
+        // Activate pen only when path starts drawing (localT >= 0)
+        if (localT >= 0 && !pens[activeIdx].classList.contains('active')) {
+          pens[activeIdx].classList.remove('fading');
+          pens[activeIdx].classList.add('active');
+        }
+        
         const e = smoothstep(localT);
         el.style.strokeDashoffset = String(length * (1 - e));
         const pt = el.getPointAtLength(length * e);
