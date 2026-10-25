@@ -27,6 +27,7 @@ function App() {
     const handleLoad = () => {
       setTimeout(() => {
         setAnimationsReady(true);
+        document.body.classList.add('animations-ready');
       }, 1000);
     };
 
@@ -286,18 +287,6 @@ function App() {
 
     return () => {
       cancelAnimationFrame(rafId);
-    };
-  }, [animationsReady]);
-
-  // Add animations-ready class to body for CSS animations
-  useEffect(() => {
-    if (animationsReady) {
-      document.body.classList.add('animations-ready');
-    } else {
-      document.body.classList.remove('animations-ready');
-    }
-    return () => {
-      document.body.classList.remove('animations-ready');
     };
   }, [animationsReady]);
 

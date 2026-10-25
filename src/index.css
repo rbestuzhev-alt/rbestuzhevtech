@@ -352,10 +352,10 @@ body.animations-ready .contact__row {
   animation: fadeInUp 0.6s ease forwards;
 }
 
-body.animations-ready .contact__row:nth-child(3) { animation-delay: 0s; }
-body.animations-ready .contact__row:nth-child(4) { animation-delay: 0.15s; }
-body.animations-ready .contact__row:nth-child(5) { animation-delay: 0.3s; }
-body.animations-ready .contact__row:nth-child(6) { animation-delay: 0.45s; }
+body.animations-ready .contact__row:nth-of-type(1) { animation-delay: 0s; }
+body.animations-ready .contact__row:nth-of-type(2) { animation-delay: 0.15s; }
+body.animations-ready .contact__row:nth-of-type(3) { animation-delay: 0.3s; }
+body.animations-ready .contact__row:nth-of-type(4) { animation-delay: 0.45s; }
 
 @keyframes fadeInUp {
   to {
@@ -582,17 +582,16 @@ body.animations-ready .contact__row:nth-child(6) { animation-delay: 0.45s; }
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
-  transition: opacity .4s cubic-bezier(.4, 0, .2, 1);
+  transition: opacity 0.3s ease;
 }
 
 .pen-dot.active {
   opacity: 1;
-  transition-duration: .15s;
 }
 
 .pen-dot.fading {
   opacity: 0;
-  transition-duration: .4s;
+  transition: opacity 0.5s ease;
 }
 
 .pen-dot--final.fading {
