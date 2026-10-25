@@ -12,7 +12,6 @@ function App() {
   const svgRef = useRef<SVGSVGElement>(null);
   const decodingRef1 = useRef<HTMLSpanElement>(null);
   const decodingRef2 = useRef<HTMLSpanElement>(null);
-  const contactRowsRef = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
   const reducedMotion = useRef(false);
 
   const line1 = 'Пока тут ничего нет,';
@@ -282,40 +281,16 @@ function App() {
     };
   }, [animationsReady]);
 
-  // IntersectionObserver for contact rows (desktop only)
+  // Add animations-ready class to body for CSS animations
   useEffect(() => {
-    if (!animationsReady) return;
-
-    const isMobile = window.innerWidth <= 760 || 'ontouchstart' in window;
-
-    // On mobile or reduced motion, show all rows immediately
-    if (isMobile || reducedMotion.current) {
-      contactRowsRef.current.forEach((row) => {
-        if (row) row.classList.add('visible');
-      });
-      return;
+    if (animationsReady) {
+      document.body.classList.add('animations-ready');
+    } else {
+      document.body.classList.remove('animations-ready');
     }
-
-    // On desktop, use IntersectionObserver for scroll-triggered animation
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
-            const el = entry.target as HTMLElement;
-            const delay = parseInt(el.dataset.delay || '0', 10);
-            setTimeout(() => el.classList.add('visible'), delay);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    contactRowsRef.current.forEach((row) => {
-      if (row) observer.observe(row);
-    });
-
-    return () => observer.disconnect();
+    return () => {
+      document.body.classList.remove('animations-ready');
+    };
   }, [animationsReady]);
 
   // Copy to clipboard
@@ -513,11 +488,7 @@ function App() {
         </div>
 
         {/* Phone */}
-        <div
-          className="contact__row"
-          ref={(el) => { contactRowsRef.current[0] = el; }}
-          data-delay="0"
-        >
+        <div className="contact__row">
           <p className="micro contact__label">телефон</p>
           <span className="contact__value">+7 921 666 90 66</span>
           <a className="contact__action-btn" href="tel:+79216669066" aria-label="Позвонить по номеру +7 921 666 90 66">
@@ -527,11 +498,7 @@ function App() {
         </div>
 
         {/* Email */}
-        <div
-          className="contact__row"
-          ref={(el) => { contactRowsRef.current[1] = el; }}
-          data-delay="150"
-        >
+        <div className="contact__row">
           <p className="micro contact__label">почта</p>
           <span className="contact__value">fullstack@bestuzhev.tech</span>
           <a className="contact__action-btn" href="mailto:fullstack@bestuzhev.tech" aria-label="Написать на почту fullstack@bestuzhev.tech">
@@ -541,11 +508,7 @@ function App() {
         </div>
 
         {/* Telegram */}
-        <div
-          className="contact__row"
-          ref={(el) => { contactRowsRef.current[2] = el; }}
-          data-delay="300"
-        >
+        <div className="contact__row">
           <p className="micro contact__label">Telegram</p>
           <span className="contact__value">rbestuzhev</span>
           <a className="contact__action-btn" href="https://t.me/rbestuzhev" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram @rbestuzhev">
@@ -555,11 +518,7 @@ function App() {
         </div>
 
         {/* MAX */}
-        <div
-          className="contact__row"
-          ref={(el) => { contactRowsRef.current[3] = el; }}
-          data-delay="450"
-        >
+        <div className="contact__row">
           <p className="micro contact__label">MAX</p>
           <span className="contact__value">Роман Бестужев</span>
           <a className="contact__action-btn" href="https://max.ru/u/f9LHodD0cOKhOQcmdKaXFYlTU4PCgvV05zr5zYjPgYNDeRWT6wqlngRQNXk" target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX Роману Бестужеву">

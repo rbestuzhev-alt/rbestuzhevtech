@@ -334,7 +334,6 @@ body {
   padding: 32px 0;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity .7s ease, transform .7s ease;
   text-align: center;
   width: 100%;
 }
@@ -348,9 +347,30 @@ body {
   margin: 0 auto 16px auto;
 }
 
-.contact__row.visible {
-  opacity: 1;
-  transform: translateY(0);
+/* CSS animation triggered by body.animations-ready class */
+body.animations-ready .contact__row {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+body.animations-ready .contact__row:nth-child(3) { animation-delay: 0s; }
+body.animations-ready .contact__row:nth-child(4) { animation-delay: 0.15s; }
+body.animations-ready .contact__row:nth-child(5) { animation-delay: 0.3s; }
+body.animations-ready .contact__row:nth-child(6) { animation-delay: 0.45s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion — show immediately */
+@media (prefers-reduced-motion: reduce) {
+  .contact__row {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
 
 /* Mobile: show immediately without animation to prevent flickering on iOS Safari */
@@ -358,7 +378,7 @@ body {
   .contact__row {
     opacity: 1;
     transform: none;
-    transition: none;
+    animation: none;
   }
 }
 
